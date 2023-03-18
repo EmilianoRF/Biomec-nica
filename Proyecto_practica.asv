@@ -60,7 +60,7 @@ A19 =antropometria.children.ANCHO_PIE_DERECHO.info.values*factor;
 A20 =antropometria.children.ANCHO_PIE_IZQUIERDO.info.values*factor;
 
 % ====================================================================================================================================%
-%  RECORTE DE LOS MARCADORES
+%  ACONDICIOMAMIENTO DE LOS MARCADORES
 
 % Se lee la frecuencia de muestreo de la camara
 fm = informacionCine.frequency(1);
@@ -73,12 +73,13 @@ RHS1 = round(Eventos.Derecho_RHS(1)*fm);
 RHS2 = round(Eventos.Derecho_RHS(2)*fm);
 % Pie izquierdo (LHS = left heel strike)
 LHS1 = round(Eventos.Izquierdo_LHS(1)*fm);
-LHS2 = round(Eventos.Izquierdo_LHS(2)*fm);
+LHS2 = round(Eventos.Izquierdo_LHS(1)*fm);
 % En este caso el comienzo de la marcha se da con el apoyo del pie derecho
 inicio = RHS1;
 fin= LHS2;
 
-% Se hace el recorte. La sintaxis es (fila_inicial:fila_final,columna inicial:columna final) si no se pone nada se toman todas las columnas.
+% SE RECORTAN LOS MARCADORES
+% La sintaxis es (fila_inicial:fila_final,columna inicial:columna final) si no se pone nada se toman todas las columnas.
 
 % Cabeza del 2do metatarsiano derecho.
 p1=marcadores.r_met(inicio:fin,:);
@@ -125,38 +126,4 @@ p14=marcadores.l_asis(inicio:fin,:);
 % Sacro.
 p15=marcadores.sacrum(inicio:fin,:);
 
-% ====================================================================================================================================%
-%  FILTRADO DE LOS MARCADORES
 
-% Frecuencia de Nyquist.
-fn= fm/2;
-% Frecuencia de corte del filtro.
-fc = 10;
-% b y a son el numerador y denomindor de la funcion de transferencia del filtro.
-[b,a] = butter(2,fc/fn);
-% Ahora filtramos cada uno de los marcadores por columna.
-for i=1:3
-    p1(:,i)    =  filtfilt(b,a, p1(:,i));
-    p2(:,i)    =  filtfilt(b,a, p2(:,i));
-    p3(:,i)    =  filtfilt(b,a, p3(:,i));
-    p4(:,i)    =  filtfilt(b,a, p4(:,i));
-    p5(:,i)    =  filtfilt(b,a, p5(:,i));
-    p6(:,i)    =  filtfilt(b,a, p6(:,i));
-    p7(:,i)    =  filtfilt(b,a, p7(:,i));
-    p8(:,i)    =  filtfilt(b,a, p8(:,i));
-    p9(:,i)    =  filtfilt(b,a, p9(:,i));
-    p10(:,i)  =  filtfilt(b,a, p10(:,i));
-    p11(:,i)  =  filtfilt(b,a, p11(:,i));
-    p12(:,i)  =  filtfilt(b,a, p12(:,i));
-    p13(:,i)  =  filtfilt(b,a, p13(:,i));
-    p14(:,i)  =  filtfilt(b,a, p14(:,i));
-    p15(:,i)  =  filtfilt(b,a, p15(:,i));
-end
-
-% Plot de testeo de los marcadores de los tobillos
-figure
-plot(p2(:,3),'LineWidth', 1.5);
-hold on
-plot(p9(:,3),'LineWidth', 1.5);
-legend({'Talon derecho','Talon izquierdo'})
-% ====================================================================================================================================%
