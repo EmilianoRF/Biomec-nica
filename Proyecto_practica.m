@@ -2,7 +2,7 @@ clear all % borra las variables
 close all % cierra las ventanas
 clc % limpia la consola
 
-% ===================================================================================================================================%
+% ===========================================================================================================================================================%
 %  SE IMPORTAN LOS DATOS DE LA MARCHA
 
 ruta_archivo = 'C:\Users\Emiliano\Desktop\Biomecánica\Práctica\Biomecanica\0037_Davis_MarchaDavis_Walking02b2021.c3d';
@@ -12,7 +12,7 @@ h = btkReadAcquisition(ruta_archivo);
 antropometria = btkFindMetaData(h,'Antropometria');
 Eventos=btkGetEvents(h);
 
-% ==================================================================================================================================%
+% ===========================================================================================================================================================%
 %      DATOS ANTROPOMETRICOS
 
 % Las medidas estan en cm entonces se usa un factor para pasarlas a metros
@@ -59,7 +59,7 @@ A19 =antropometria.children.ANCHO_PIE_DERECHO.info.values*factor;
 % A20 es el ancho del pie izquierdo.
 A20 =antropometria.children.ANCHO_PIE_IZQUIERDO.info.values*factor;
 
-% ====================================================================================================================================%
+% ===========================================================================================================================================================%
 %  RECORTE DE LOS MARCADORES
 
 % Se lee la frecuencia de muestreo de la camara
@@ -125,7 +125,7 @@ p14=marcadores.l_asis(inicio:fin,:);
 % Sacro.
 p15=marcadores.sacrum(inicio:fin,:);
 
-% ====================================================================================================================================%
+% ===========================================================================================================================================================%
 %  FILTRADO DE LOS MARCADORES
 
 % Frecuencia de Nyquist.
@@ -159,4 +159,85 @@ plot(p2(:,3),'LineWidth', 1.5);
 hold on
 plot(p9(:,3),'LineWidth', 1.5);
 legend({'Talon derecho','Talon izquierdo'})
-% ====================================================================================================================================%
+
+% ===========================================================================================================================================================%
+%  SE CALCULAN U,V,W 
+
+%     Calculo para la PELVIS
+% ------------   vPelvis = (p14 - p7)/|p14 - p7| 
+numerador      = p14-p7;
+denominador  = sqrt(sum(numerador.^2,2));
+vPelvis               = numerador./denominador;
+
+% ------------   wPelvis = (p7 - p15) x( p14-p15)/|(p7 - p15) x( p14-p15)| 
+numerador      = cross((p7-p15),(p14-p15));
+denominador  = sqrt(sum(numerador.^2,2));
+wPelvis             = numerador./denominador;
+
+% ------------   uPelvis = vPelvis x wPelvis
+uPelvis             = cross(vPelvis,wPelvis);
+
+% ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+%     Calculo para la PIERNA DERECHA
+% ------------   vPierna_derecha =  (p3 - p5)/|p3 - p5| 
+numerador           = p3-p5;
+denominador       = sqrt(sum(numerador.^2,2));
+vPierna_derecha  = numerador./denominador;
+
+% ------------   uPierna_derecha = (p4 - p5) x( p3-p5)/|(p4 - p5) x( p3-p5)| 
+numerador            = cross((p4-p5),(p3-p5));
+denominador        = sqrt(sum(numerador.^2,2));
+uPierna_derecha  = numerador./denominador;
+
+% ------------   wPierna_derecha = uPierna_derecha x vPierna_derecha
+wPierna_derecha   = cross(uPierna_derecha,vPierna_derecha);
+% ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+
+%     Calculo para la PIERNA IZQUIERDA
+% ------------   vPierna_izquierda =  (p10 - p12)/|p10 - p12| 
+numerador             = p10-p12;
+denominador         = sqrt(sum(numerador.^2,2));
+vPierna_izquierda  = numerador./denominador;
+
+% ------------   uPierna_izquierda = (p11 - p12) x( p10-p12)/|(p11 - p12) x( p10-p12)| 
+numerador              = cross((p11-p12),(p10-p12));
+denominador          = sqrt(sum(numerador.^2,2));
+uPierna_izquierda   = numerador./denominador;
+
+% ------------   wPierna_izquierda = uPierna_izquierda x vPierna_izquierda
+wPierna_izquierda   = cross(uPierna_izquierda,vPierna_izquierda);
+% ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+
+%     Calculo para el PIE DERECHO
+% ------------   uPie_derecho =  (p1 - p2)/|p1 - p2| 
+numerador           = p1-p3;
+denominador       = sqrt(sum(numerador.^2,2));
+uPie_derecho       = numerador./denominador;
+
+% ------------   wPie_derecho = (p1 - p3) x( p2-p3)/|(p1 - p3) x( p2-p3)| 
+numerador            = cross((p1-p3),(p2-p3));
+denominador        = sqrt(sum(numerador.^2,2));
+wPie_derecho       = numerador./denominador;
+
+% ------------   vPie_derecho = wPie_derecho x uPie_derecho
+vPie_derecho       = cross(wPie_derecho,uPie_derecho);
+% ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+%     Calculo para el PIE IZQUIERDO
+% ------------   uPie_izquierdo =  (p8 - p9)/|p8 - p9| 
+numerador           = p8-p9;
+denominador       = sqrt(sum(numerador.^2,2));
+uPie_izquierdo   = numerador./denominador;
+
+% ------------   wPie_izquierdo = (p8 - p10) x( p9-p10)/|(p8- p10) x( p9-p10)| 
+numerador            = cross((p8-p10),(p9-p10));
+denominador        = sqrt(sum(numerador.^2,2));
+wPie_izquierdo      = numerador./denominador;
+
+% ------------   vPie_izquierdo = wPie_izquierdo x uPie_izquierdo
+vPie_izquierdo       = cross(wPie_izquierdo,uPie_izquierdo);
+
+% ===========================================================================================================================================================%
+%  SE CALCULAN LAS POSICIONES ARTICULARES
+
+
+
