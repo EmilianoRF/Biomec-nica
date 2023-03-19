@@ -154,11 +154,11 @@ for i=1:3
 end
 
 % Plot de testeo de los marcadores de los tobillos
-figure
-plot(p2(:,3),'LineWidth', 1.5);
-hold on
-plot(p9(:,3),'LineWidth', 1.5);
-legend({'Talon derecho','Talon izquierdo'})
+%figure
+%plot(p2(:,3),'LineWidth', 1.5);
+%hold on
+%plot(p9(:,3),'LineWidth', 1.5);
+%legend({'Talon derecho','Talon izquierdo'})
 
 % ===========================================================================================================================================================%
 %  SE CALCULAN U,V,W 
@@ -239,5 +239,45 @@ vPie_izquierdo       = cross(wPie_izquierdo,uPie_izquierdo);
 % ===========================================================================================================================================================%
 %  SE CALCULAN LAS POSICIONES ARTICULARES
 
+%     Calculo para la CADERA DERECHA
+  p_cadera_derecha  = p15+0.598*A2*uPelvis - 0.344*A2*vPelvis - 0.29*A2*wPelvis;
+  
+  %     Calculo para la CADERA IZQUIERDA
+  p_cadera_izquierda  = p15+0.598*A2*uPelvis + 0.344*A2*vPelvis - 0.29*A2*wPelvis;
+  
+  %     Calculo para la RODILLA DERECHA
+  p_rodilla_derecha  = p5+0.0*A11*uPierna_derecha+0.0*A11*vPierna_derecha + 0.5*A11*wPierna_derecha;
+  
+  %     Calculo para la RODILLA IZQUIERDA
+  p_rodilla_izquierda  = p12+0.0*A12*uPierna_izquierda+0.0*A12*vPierna_izquierda - 0.5*A12*wPierna_izquierda;
 
+  %     Calculo para el TOBILLO DERECHO
+  p_tobillo_derecho  = p3+0.016*A13*uPie_derecho + 0.392*A15*vPie_derecho+0.478*A17*wPie_derecho;
+  
+  %     Calculo para el TOBILLO IZQUIERDO
+  p_tobillo_izquierdo  = p10+0.016*A14*uPie_izquierdo+0.392*A16*vPie_izquierdo-0.478*A18*wPie_izquierdo;
 
+  % Calculo para el DEDO DERECHO
+  p_dedo_derecho = p3+0.742*A13*uPie_derecho + 1.074*A15*vPie_derecho - 0.187*A19*wPie_derecho;
+  
+    % Calculo para el DEDO IZQUIERDO
+  p_dedo_izquierdo = p10+0.742*A14*uPie_izquierdo + 1.074*A16*vPie_izquierdo + 0.187*A20*wPie_izquierdo;
+  
+ % ===========================================================================================================================================================%
+  
+ figure
+ plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',2); 
+ hold on
+ plot3(p7(:,1),p7(:,2),p7(:,3),'LineWidth',2); 
+ hold on
+ plot3(p14(:,1),p14(:,2),p14(:,3),'LineWidth',2); 
+ xlabel('x');
+ ylabel('y');
+ zlabel('z');
+ hold on
+ for i=1:10:length(p15)
+     quiver3(p15(i,1),p15(i,2),p15(i,3),uPelvis(i,1)./10,uPelvis(i,2)./10,uPelvis(i,3)./10)
+     %quiver3(p15(i,1),p15(i,2),p15(i,3),vPelvis(i,1)./10,vPelvis(i,2)./10,vPelvis(i,3)./10)
+     %quiver3(p15(i,1),p15(i,2),p15(i,3),wPelvis(i,1)./10,wPelvis(i,2)./10,wPelvis(i,3)./10)
+ end
+ legend('Marcador sacro','Marcador iliaca derecha','Marcador iliaca izquierda')
