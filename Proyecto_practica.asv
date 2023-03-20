@@ -3,14 +3,6 @@ close all % cierra las ventanas
 clc % limpia la consola
 
 % ===========================================================================================================================================================%
-%  VARIABLES EXTRAS
-
-rojo  = [1 0 0];
-verde  = [0.051 0.529 0.051 ];
-azul = [0 0 1];
-negro = [0 0 0];
-factor_vectores = 1/20;
-% ===========================================================================================================================================================%
 %  SE IMPORTAN LOS DATOS DE LA MARCHA
 
 ruta_archivo = 'C:\Users\Emiliano\Desktop\Biomecánica\Práctica\Biomecanica\0037_Davis_MarchaDavis_Walking02b2021.c3d';
@@ -274,19 +266,20 @@ vPie_izquierdo       = cross(wPie_izquierdo,uPie_izquierdo);
  % ===========================================================================================================================================================%
   
  figure
- plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',2,'color',negro); 
+ plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',2); 
  hold on
  plot3(p7(:,1),p7(:,2),p7(:,3),'LineWidth',2); 
  hold on
  plot3(p14(:,1),p14(:,2),p14(:,3),'LineWidth',2); 
+ zlim([0.9 1.2])
  xlabel('x [m]','Interpreter','latex');
  ylabel('y [m]','Interpreter','latex');
  zlabel('z [m]','Interpreter','latex');
  hold on
  grid on
  for i=1:10:length(p15)
-     quiver3(p15(i,1),p15(i,2),p15(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',1.5)
-     quiver3(p15(i,1),p15(i,2),p15(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',1.5)
-     quiver3(p15(i,1),p15(i,2),p15(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',1.5)
+     quiver3(p15(i,1),p15(i,2),p15(i,3),uPelvis(i,1)./10,uPelvis(i,2)./10,uPelvis(i,3)./10,'r','LineWidth',1.5)
+     quiver3(p15(i,1),p15(i,2),p15(i,3),vPelvis(i,1)./10,vPelvis(i,2)./10,vPelvis(i,3)./10,'b','LineWidth',1.5)
+     quiver3(p15(i,1),p15(i,2),p15(i,3),wPelvis(i,1)./10,wPelvis(i,2)./10,wPelvis(i,3)./10,'color',[r0.051, 0.529, 0.051) ],'LineWidth',1.5)
  end
  legend({'Marcador sacro','Marcador espina iliaca derecha','Marcador espina iliaca izquierda','$\vec{u}$','$\vec{v}$','$\vec{w}$'},'Interpreter','latex')
