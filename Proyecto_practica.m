@@ -9,7 +9,8 @@ rojo  = [1 0 0];
 verde  = [0.051 0.529 0.051 ];
 azul = [0 0 1];
 negro = [0 0 0];
-factor_vectores = 1/20;
+factor_vectores = 1/25;
+line_width = 1.75;
 % ===========================================================================================================================================================%
 %  SE IMPORTAN LOS DATOS DE LA MARCHA
 
@@ -272,21 +273,77 @@ vPie_izquierdo       = cross(wPie_izquierdo,uPie_izquierdo);
   p_dedo_izquierdo = p10+0.742*A14*uPie_izquierdo + 1.074*A16*vPie_izquierdo + 0.187*A20*wPie_izquierdo;
   
  % ===========================================================================================================================================================%
-  
- figure
- plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',2,'color',negro); 
- hold on
- plot3(p7(:,1),p7(:,2),p7(:,3),'LineWidth',2); 
- hold on
- plot3(p14(:,1),p14(:,2),p14(:,3),'LineWidth',2); 
+fig = figure;
+axis square
+plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',2,'color',negro); 
+hold on
+plot3(p7(:,1),p7(:,2),p7(:,3),'LineWidth',2); 
+hold on
+plot3(p14(:,1),p14(:,2),p14(:,3),'LineWidth',2); 
+hold on
+plot3(p5(:,1),p5(:,2),p5(:,3),'LineWidth',2); 
+hold on
+plot3(p12(:,1),p12(:,2),p12(:,3),'LineWidth',2); 
+hold on
+plot3(p2(:,1),p2(:,2),p2(:,3),'LineWidth',2); 
+hold on
+plot3(p9(:,1),p9(:,2),p9(:,3),'LineWidth',2); 
+hold on
+plot3(p1(:,1),p1(:,2),p1(:,3),'LineStyle',':','LineWidth',2); 
+hold on
+plot3(p8(:,1),p8(:,2),p8(:,3),'LineStyle',':','LineWidth',2); 
+hold on
  xlabel('x [m]','Interpreter','latex');
  ylabel('y [m]','Interpreter','latex');
  zlabel('z [m]','Interpreter','latex');
- hold on
  grid on
- for i=1:10:length(p15)
-     quiver3(p15(i,1),p15(i,2),p15(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',1.5)
-     quiver3(p15(i,1),p15(i,2),p15(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',1.5)
-     quiver3(p15(i,1),p15(i,2),p15(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',1.5)
+ for i=1:20:length(p15)
+     quiver3(p15(i,1),p15(i,2),p15(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p15(i,1),p15(i,2),p15(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p15(i,1),p15(i,2),p15(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+     %{
+     quiver3(p7(i,1),p7(i,2),p7(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p7(i,1),p7(i,2),p7(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p7(i,1),p7(i,2),p7(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+     
+     quiver3(p14(i,1),p14(i,2),p14(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p14(i,1),p14(i,2),p14(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p14(i,1),p14(i,2),p14(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+     
+     quiver3(p5(i,1),p5(i,2),p5(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p5(i,1),p5(i,2),p5(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p5(i,1),p5(i,2),p5(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+     
+     quiver3(p12(i,1),p12(i,2),p12(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p12(i,1),p12(i,2),p12(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p12(i,1),p12(i,2),p12(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+     
+     quiver3(p2(i,1),p2(i,2),p2(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p2(i,1),p2(i,2),p2(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p2(i,1),p2(i,2),p2(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+     
+     quiver3(p9(i,1),p9(i,2),p9(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p9(i,1),p9(i,2),p9(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p9(i,1),p9(i,2),p9(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+     
+     quiver3(p1(i,1),p1(i,2),p1(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p1(i,1),p1(i,2),p1(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p1(i,1),p1(i,2),p1(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+     
+     quiver3(p8(i,1),p8(i,2),p8(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p8(i,1),p8(i,2),p8(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p8(i,1),p8(i,2),p8(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+     
+     drawnow
+     %}
  end
- legend({'Marcador sacro','Marcador espina iliaca derecha','Marcador espina iliaca izquierda','$\vec{u}$','$\vec{v}$','$\vec{w}$'},'Interpreter','latex')
+ legend({'Marcador sacro (p15)',...,
+     'Marcador espina iliaca derecha (p7)',...,
+     'Marcador espina iliaca izquierda (p14)',...,
+     'Marcador femoral derecho (p5)',...,
+     'Marcador femoral izquierdo (p12)',...,
+     'Marcador talon derecho (p2)',...,
+      'Marcador talon izquierdo (p9)',...,
+      'Marcador 2do met. derercho (p1)',...,
+      'Marcador 2do met. izquierdo (p8)',...,
+     '$\vec{u}$','$\vec{v}$','$\vec{w}$'},'Interpreter','latex')
