@@ -9,6 +9,8 @@ rojo  = [1 0 0];
 verde  = [0.051 0.529 0.051 ];
 azul = [0 0 1];
 negro = [0 0 0];
+cian = [0.188, 0.612, 0.612, 0.2];
+purpura = [0.188, 0.11, 0.612, 0.2];
 factor_vectores = 1/15;
 line_width = 1.75;
 % ===========================================================================================================================================================%
@@ -187,34 +189,34 @@ wPelvis             = numerador./denominador;
 uPelvis             = cross(vPelvis,wPelvis);
 
 % ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
-%     Calculo para la PIERNA DERECHA
+%     Calculo para la PIERNA DERECHA (rodilla)
 % ------------   vPierna_derecha =  (p3 - p5)/|p3 - p5| 
 numerador           = p3-p5;
 denominador       = sqrt(sum(numerador.^2,2));
-vPierna_derecha  = numerador./denominador;
+vRodilla_derecha  = numerador./denominador;
 
-% ------------   uPierna_derecha = (p4 - p5) x( p3-p5)/|(p4 - p5) x( p3-p5)| 
+% ------------   uRodilla_derecha = (p4 - p5) x( p3-p5)/|(p4 - p5) x( p3-p5)| 
 numerador            = cross((p4-p5),(p3-p5));
 denominador        = sqrt(sum(numerador.^2,2));
-uPierna_derecha  = numerador./denominador;
+uRodilla_derecha  = numerador./denominador;
 
-% ------------   wPierna_derecha = uPierna_derecha x vPierna_derecha
-wPierna_derecha   = cross(uPierna_derecha,vPierna_derecha);
+% ------------   wRodilla_derecha = uRodilla_derecha x vRodilla_derecha
+wRodilla_derecha   = cross(uRodilla_derecha,vRodilla_derecha);
 % ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
 
-%     Calculo para la PIERNA IZQUIERDA
+%     Calculo para la RODILLA IZQUIERDA
 % ------------   vPierna_izquierda =  (p10 - p12)/|p10 - p12| 
 numerador             = p10-p12;
 denominador         = sqrt(sum(numerador.^2,2));
-vPierna_izquierda  = numerador./denominador;
+vRodilla_izquierda  = numerador./denominador;
 
-% ------------   uPierna_izquierda = (p11 - p12) x( p10-p12)/|(p11 - p12) x( p10-p12)| 
+% ------------   uRodilla_izquierda = (p11 - p12) x( p10-p12)/|(p11 - p12) x( p10-p12)| 
 numerador              = cross((p11-p12),(p10-p12));
 denominador          = sqrt(sum(numerador.^2,2));
-uPierna_izquierda   = numerador./denominador;
+uRodilla_izquierda   = numerador./denominador;
 
-% ------------   wPierna_izquierda = uPierna_izquierda x vPierna_izquierda
-wPierna_izquierda   = cross(uPierna_izquierda,vPierna_izquierda);
+% ------------   wRodilla_izquierda = uRodilla_izquierda x vRodilla_izquierda
+wRodilla_izquierda   = cross(uRodilla_izquierda,vRodilla_izquierda);
 % ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
 
 %     Calculo para el PIE DERECHO
@@ -255,10 +257,10 @@ vPie_izquierdo       = cross(wPie_izquierdo,uPie_izquierdo);
   p_cadera_izquierda  = p15+0.598*A2*uPelvis + 0.344*A2*vPelvis - 0.29*A2*wPelvis;
   
   %     Calculo para la RODILLA DERECHA
-  p_rodilla_derecha  = p5+0.0*A11*uPierna_derecha+0.0*A11*vPierna_derecha + 0.5*A11*wPierna_derecha;
+  p_rodilla_derecha  = p5+0.0*A11*uRodilla_derecha+0.0*A11*vRodilla_derecha + 0.5*A11*wRodilla_derecha;
   
   %     Calculo para la RODILLA IZQUIERDA
-  p_rodilla_izquierda  = p12+0.0*A12*uPierna_izquierda+0.0*A12*vPierna_izquierda - 0.5*A12*wPierna_izquierda;
+  p_rodilla_izquierda  = p12+0.0*A12*uRodilla_izquierda+0.0*A12*vRodilla_izquierda - 0.5*A12*wRodilla_izquierda;
 
   %     Calculo para el TOBILLO DERECHO
   p_tobillo_derecho  = p3+0.016*A13*uPie_derecho + 0.392*A15*vPie_derecho+0.478*A17*wPie_derecho;
@@ -274,53 +276,71 @@ vPie_izquierdo       = cross(wPie_izquierdo,uPie_izquierdo);
   
  % ===========================================================================================================================================================%
 fig = figure;
+
+ for i=1:20:length(p_cadera_derecha)
+     
+    % Sacro
+    plot3(p15(i,1),p15(i,2),p15(i,3),'diamond','LineWidth',line_width,'color',cian); 
+    hold on
+     % Para la cadera derecha
+    plot3(p_cadera_derecha(i,1),p_cadera_derecha(i,2),p_cadera_derecha(i,3),'o','LineWidth',line_width,'color',negro);
+    hold on
+      % Para la cadera izquierda
+     plot3(p_cadera_izquierda(i,1),p_cadera_izquierda(i,2),p_cadera_izquierda(i,3),'+','LineWidth',line_width,'color',negro); 
+     hold on
+     % Para la rodilla derecha
+     plot3(p_rodilla_derecha(i,1),p_rodilla_derecha(i,2),p_rodilla_derecha(i,3),'*','LineWidth',line_width,'color',negro);
+     hold on
+     % Para la rodilla izquierda
+     plot3(p_rodilla_izquierda(i,1),p_rodilla_izquierda(i,2),p_rodilla_izquierda(i,3),'x','LineWidth',line_width,'color',negro); 
+     hold on
+     % Para el tobillo derecho
+     plot3(p_tobillo_derecho(i,1),p_tobillo_derecho(i,2),p_tobillo_derecho(i,3),'pentagram','LineWidth',line_width,'color',negro);
+     hold on
+     % Para la rodilla izquierda
+     plot3(p_tobillo_izquierdo(i,1),p_tobillo_izquierdo(i,2),p_tobillo_izquierdo(i,3),'>','LineWidth',line_width,'color',negro); 
+     hold on
+     
+     quiver3(p_cadera_derecha(i,1),p_cadera_derecha(i,2),p_cadera_derecha(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p_cadera_derecha(i,1),p_cadera_derecha(i,2),p_cadera_derecha(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p_cadera_derecha(i,1),p_cadera_derecha(i,2),p_cadera_derecha(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+
+     quiver3(p_cadera_izquierda(i,1),p_cadera_izquierda(i,2),p_cadera_izquierda(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p_cadera_izquierda(i,1),p_cadera_izquierda(i,2),p_cadera_izquierda(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p_cadera_izquierda(i,1),p_cadera_izquierda(i,2),p_cadera_izquierda(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+
+     quiver3(p_rodilla_derecha(i,1),p_rodilla_derecha(i,2),p_rodilla_derecha(i,3),uRodilla_derecha(i,1)*factor_vectores,uRodilla_derecha(i,2)*factor_vectores,uRodilla_derecha(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p_rodilla_derecha(i,1),p_rodilla_derecha(i,2),p_rodilla_derecha(i,3),vRodilla_derecha(i,1)*factor_vectores,vRodilla_derecha(i,2)*factor_vectores,vRodilla_derecha(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p_rodilla_derecha(i,1),p_rodilla_derecha(i,2),p_rodilla_derecha(i,3),wRodilla_derecha(i,1)*factor_vectores,wRodilla_derecha(i,2).*factor_vectores,wRodilla_derecha(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+ 
+     quiver3(p_rodilla_izquierda(i,1),p_rodilla_izquierda(i,2),p_rodilla_izquierda(i,3),uRodilla_izquierda(i,1)*factor_vectores,uRodilla_izquierda(i,2)*factor_vectores,uRodilla_izquierda(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p_rodilla_izquierda(i,1),p_rodilla_izquierda(i,2),p_rodilla_izquierda(i,3),vRodilla_izquierda(i,1)*factor_vectores,uRodilla_izquierda(i,2)*factor_vectores,uRodilla_izquierda(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p_rodilla_izquierda(i,1),p_rodilla_izquierda(i,2),p_rodilla_izquierda(i,3),wRodilla_izquierda(i,1)*factor_vectores,wRodilla_izquierda(i,2).*factor_vectores,wRodilla_izquierda(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+
+     
+     quiver3(p_tobillo_derecho(i,1),p_tobillo_derecho(i,2),p_tobillo_derecho(i,3),uPie_derecho(i,1)*factor_vectores,uPie_derecho(i,2)*factor_vectores,uPie_derecho(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p_tobillo_derecho(i,1),p_tobillo_derecho(i,2),p_tobillo_derecho(i,3),vPie_derecho(i,1)*factor_vectores,vPie_derecho(i,2)*factor_vectores,vPie_derecho(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p_tobillo_derecho(i,1),p_tobillo_derecho(i,2),p_tobillo_derecho(i,3),wPie_derecho(i,1)*factor_vectores,wPie_derecho(i,2).*factor_vectores,wPie_derecho(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+
+      quiver3(p_tobillo_izquierdo(i,1),p_tobillo_izquierdo(i,2),p_tobillo_izquierdo(i,3),uPie_izquierdo(i,1)*factor_vectores,uPie_izquierdo(i,2)*factor_vectores,uPie_izquierdo(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+     quiver3(p_tobillo_izquierdo(i,1),p_tobillo_izquierdo(i,2),p_tobillo_izquierdo(i,3),vPie_izquierdo(i,1)*factor_vectores,vPie_izquierdo(i,2)*factor_vectores,vPie_izquierdo(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+     quiver3(p_tobillo_izquierdo(i,1),...,
+         p_tobillo_izquierdo(i,2),p_tobillo_izquierdo(i,3),wPie_izquierdo(i,1)*factor_vectores,wPie_izquierdo(i,2).*factor_vectores,wPie_izquierdo(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+
+     
+ end
+ grid on
+ title('Trayectoria de los segmentos articulares junto con los vectores $\vec{u}$, $\vec{v}$ y $\vec{w}$','Interpreter','latex')
 xlabel('x [m]','Interpreter','latex');
 ylabel('y [m]','Interpreter','latex');
 zlabel('z [m]','Interpreter','latex');
-
-% Sacro
-plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',line_width,'color',negro); 
-hold on
-% Espina iliaca anterior superior derecha
-plot3(p7(:,1),p7(:,2),p7(:,3),'LineWidth',line_width); 
-hold on
-% Espina ilica anterior superior izquierda
-plot3(p14(:,1),p14(:,2),p14(:,3),'LineWidth',line_width); 
-hold on
-% Epicondilo femoral derecho
-plot3(p5(:,1),p5(:,2),p5(:,3),'LineWidth',line_width); 
-hold on
-% Epicondilo femoral izquierdo
-plot3(p12(:,1),p12(:,2),p12(:,3),'LineWidth',line_width); 
-hold on
-% Talon derecho
-plot3(p2(:,1),p2(:,2),p2(:,3),'LineWidth',line_width); 
-hold on
-% Talon izquierdo
-plot3(p9(:,1),p9(:,2),p9(:,3),'LineWidth',line_width); 
-hold on
-% Cabeza del 2do metatarsiano derecho
-plot3(p1(:,1),p1(:,2),p1(:,3),'LineStyle',':','LineWidth',line_width); 
-hold on
-% Cabeza del 2do metatarsiano izquierdo
-plot3(p8(:,1),p8(:,2),p8(:,3),'LineStyle',':','LineWidth',line_width); 
-hold on
-
- for i=1:20:length(p15)
-     % Para el sacro
-     quiver3(p15(i,1),p15(i,2),p15(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
-     quiver3(p15(i,1),p15(i,2),p15(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
-     quiver3(p15(i,1),p15(i,2),p15(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
-
- end
- grid on
  legend({'Marcador sacro (p15)',...,
-     'Marcador espina iliaca derecha (p7)',...,
-     'Marcador espina iliaca izquierda (p14)',...,
-     'Marcador femoral derecho (p5)',...,
-     'Marcador femoral izquierdo (p12)',...,
-     'Marcador talon derecho (p2)',...,
-      'Marcador talon izquierdo (p9)',...,
-      'Marcador 2do met. derercho (p1)',...,
-      'Marcador 2do met. izquierdo (p8)',...,
-     '$\vec{u}$','$\vec{v}$','$\vec{w}$'},'Interpreter','latex')
+     'Posicion cadera derecha ',...,
+     'Posicion cadera izquierda ',...,
+      'Posicion rodilla derecha ',...,
+       'Posicion rodilla izquierda ',...,
+        'Posicion tobillo derecho ',...,
+       'Posicion tobillo izquierdo ',...,
+     '$\vec{u}$',...,
+     '$\vec{v}$',...,
+     '$\vec{w}$'},'Interpreter','latex')
