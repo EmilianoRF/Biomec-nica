@@ -778,9 +778,9 @@ if plotear_ijk_centros_masa
             'Pierna izquierda ',...,
             'Pie derecho ',...,
             'Pie izquierdo ',...,
-            '$\vec{u}$',...,
-            '$\vec{v}$',...,
-            '$\vec{w}$'},'Interpreter','latex')
+            '$\vec{i}$',...,
+            '$\vec{j}$',...,
+            '$\vec{k}$'},'Interpreter','latex')
     else
         title('Centros de masa junto con los vectores $\vec{i}$, $\vec{j}$ y $\vec{k}$.','Interpreter','latex')
         legend({'Marcador sacro (p15)',...,
@@ -790,8 +790,8 @@ if plotear_ijk_centros_masa
             'Pierna izquierda ',...,
             'Pie derecho ',...,
             'Pie izquierdo ',...,
-            '$\vec{u}$',...,
-            '$\vec{v}$',...,
-            '$\vec{w}$'},'Interpreter','latex')
+            '$\vec{i}$',...,
+            '$\vec{j}$',...,
+            '$\vec{k}$'},'Interpreter','latex')
     end
 end
