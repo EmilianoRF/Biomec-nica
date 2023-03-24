@@ -3,15 +3,19 @@ close all % cierra las ventanas
 clc % limpia la consola
 
 % ===========================================================================================================================================================%
-%  VARIABLES EXTRAS
 
+%  VARIABLES PARA CONTROLAR LAS FIGURAS A MOSTRAR
+plotear_uvw_centros_articulares = false;
+plotear_ijk_centros_masa  = true;
+plotear_ijk_centros_masa_y_posiciones_articulares = true;
+
+%  VARIABLES EXTRAS
 rojo  = [1 0 0];
 verde  = [0.051 0.529 0.051 ];
 azul = [0 0 1];
 negro = [0 0 0];
-cian = [0.188, 0.612, 0.612, 0.2];
-purpura = [0.188, 0.11, 0.612, 0.2];
-factor_vectores = 1/15;
+purpura = [1, 0.11, 0.612, 0.2];    
+factor_vectores = 1/30;
 line_width = 1.75;
 % ===========================================================================================================================================================%
 %  SE IMPORTAN LOS DATOS DE LA MARCHA
@@ -164,12 +168,6 @@ for i=1:3
     p15(:,i)  =  filtfilt(b,a, p15(:,i));
 end
 
-% Plot de testeo de los marcadores de los tobillos
-%figure
-%plot(p2(:,3),'LineWidth', 1.5);
-%hold on
-%plot(p9(:,3),'LineWidth', 1.5);
-%legend({'Talon derecho','Talon izquierdo'})
 
 % ===========================================================================================================================================================%
 %  SE CALCULAN U,V,W 
@@ -210,8 +208,8 @@ numerador             = p10-p12;
 denominador         = sqrt(sum(numerador.^2,2));
 vRodilla_izquierda  = numerador./denominador;
 
-% ------------   uRodilla_izquierda = (p11 - p12) x( p10-p12)/|(p11 - p12) x( p10-p12)| 
-numerador              = cross((p11-p12),(p10-p12));
+% ------------   uRodilla_izquierda = (p10 - p12) x( p11-p12)/|(p10 - p12) x( p11-p12)| 
+numerador              = cross((p10-p12),(p11-p12));
 denominador          = sqrt(sum(numerador.^2,2));
 uRodilla_izquierda   = numerador./denominador;
 
@@ -275,72 +273,525 @@ vPie_izquierdo       = cross(wPie_izquierdo,uPie_izquierdo);
   p_dedo_izquierdo = p10+0.742*A14*uPie_izquierdo + 1.074*A16*vPie_izquierdo + 0.187*A20*wPie_izquierdo;
   
  % ===========================================================================================================================================================%
-fig = figure;
 
- for i=1:20:length(p_cadera_derecha)
-     
-    % Sacro
-    plot3(p15(i,1),p15(i,2),p15(i,3),'diamond','LineWidth',line_width,'color',cian); 
-    hold on
-     % Para la cadera derecha
-    plot3(p_cadera_derecha(i,1),p_cadera_derecha(i,2),p_cadera_derecha(i,3),'o','LineWidth',line_width,'color',negro);
-    hold on
-      % Para la cadera izquierda
-     plot3(p_cadera_izquierda(i,1),p_cadera_izquierda(i,2),p_cadera_izquierda(i,3),'+','LineWidth',line_width,'color',negro); 
+ % PLOTS DE u,v,w Y LOS CENTROS ARTICULRES
+ if plotear_uvw_centros_articulares
+     figure
+     % Posicion del marcador del sacro como linea
+     plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
      hold on
-     % Para la rodilla derecha
-     plot3(p_rodilla_derecha(i,1),p_rodilla_derecha(i,2),p_rodilla_derecha(i,3),'*','LineWidth',line_width,'color',negro);
+     % Posicion de la cadera derecha como linea
+     plot3(p_cadera_derecha(:,1),p_cadera_derecha(:,2),p_cadera_derecha(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
      hold on
-     % Para la rodilla izquierda
-     plot3(p_rodilla_izquierda(i,1),p_rodilla_izquierda(i,2),p_rodilla_izquierda(i,3),'x','LineWidth',line_width,'color',negro); 
+     % Posicion de la cadera izquierda como linea
+     plot3(p_cadera_izquierda(:,1),p_cadera_izquierda(:,2),p_cadera_izquierda(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
      hold on
-     % Para el tobillo derecho
-     plot3(p_tobillo_derecho(i,1),p_tobillo_derecho(i,2),p_tobillo_derecho(i,3),'pentagram','LineWidth',line_width,'color',negro);
+     % Posicion de la rodilla derecha como linea
+     plot3(p_rodilla_derecha(:,1),p_rodilla_derecha(:,2),p_rodilla_derecha(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
      hold on
-     % Para la rodilla izquierda
-     plot3(p_tobillo_izquierdo(i,1),p_tobillo_izquierdo(i,2),p_tobillo_izquierdo(i,3),'>','LineWidth',line_width,'color',negro); 
+     % Posicion de la rodilla izquierda como linea
+     plot3(p_rodilla_izquierda(:,1),p_rodilla_izquierda(:,2),p_rodilla_izquierda(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
      hold on
-     
-     quiver3(p_cadera_derecha(i,1),p_cadera_derecha(i,2),p_cadera_derecha(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
-     quiver3(p_cadera_derecha(i,1),p_cadera_derecha(i,2),p_cadera_derecha(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
-     quiver3(p_cadera_derecha(i,1),p_cadera_derecha(i,2),p_cadera_derecha(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
-
-     quiver3(p_cadera_izquierda(i,1),p_cadera_izquierda(i,2),p_cadera_izquierda(i,3),uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
-     quiver3(p_cadera_izquierda(i,1),p_cadera_izquierda(i,2),p_cadera_izquierda(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
-     quiver3(p_cadera_izquierda(i,1),p_cadera_izquierda(i,2),p_cadera_izquierda(i,3),wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
-
-     quiver3(p_rodilla_derecha(i,1),p_rodilla_derecha(i,2),p_rodilla_derecha(i,3),uRodilla_derecha(i,1)*factor_vectores,uRodilla_derecha(i,2)*factor_vectores,uRodilla_derecha(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
-     quiver3(p_rodilla_derecha(i,1),p_rodilla_derecha(i,2),p_rodilla_derecha(i,3),vRodilla_derecha(i,1)*factor_vectores,vRodilla_derecha(i,2)*factor_vectores,vRodilla_derecha(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
-     quiver3(p_rodilla_derecha(i,1),p_rodilla_derecha(i,2),p_rodilla_derecha(i,3),wRodilla_derecha(i,1)*factor_vectores,wRodilla_derecha(i,2).*factor_vectores,wRodilla_derecha(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
- 
-     quiver3(p_rodilla_izquierda(i,1),p_rodilla_izquierda(i,2),p_rodilla_izquierda(i,3),uRodilla_izquierda(i,1)*factor_vectores,uRodilla_izquierda(i,2)*factor_vectores,uRodilla_izquierda(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
-     quiver3(p_rodilla_izquierda(i,1),p_rodilla_izquierda(i,2),p_rodilla_izquierda(i,3),vRodilla_izquierda(i,1)*factor_vectores,uRodilla_izquierda(i,2)*factor_vectores,uRodilla_izquierda(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
-     quiver3(p_rodilla_izquierda(i,1),p_rodilla_izquierda(i,2),p_rodilla_izquierda(i,3),wRodilla_izquierda(i,1)*factor_vectores,wRodilla_izquierda(i,2).*factor_vectores,wRodilla_izquierda(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
-
-     
-     quiver3(p_tobillo_derecho(i,1),p_tobillo_derecho(i,2),p_tobillo_derecho(i,3),uPie_derecho(i,1)*factor_vectores,uPie_derecho(i,2)*factor_vectores,uPie_derecho(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
-     quiver3(p_tobillo_derecho(i,1),p_tobillo_derecho(i,2),p_tobillo_derecho(i,3),vPie_derecho(i,1)*factor_vectores,vPie_derecho(i,2)*factor_vectores,vPie_derecho(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
-     quiver3(p_tobillo_derecho(i,1),p_tobillo_derecho(i,2),p_tobillo_derecho(i,3),wPie_derecho(i,1)*factor_vectores,wPie_derecho(i,2).*factor_vectores,wPie_derecho(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
-
-      quiver3(p_tobillo_izquierdo(i,1),p_tobillo_izquierdo(i,2),p_tobillo_izquierdo(i,3),uPie_izquierdo(i,1)*factor_vectores,uPie_izquierdo(i,2)*factor_vectores,uPie_izquierdo(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
-     quiver3(p_tobillo_izquierdo(i,1),p_tobillo_izquierdo(i,2),p_tobillo_izquierdo(i,3),vPie_izquierdo(i,1)*factor_vectores,vPie_izquierdo(i,2)*factor_vectores,vPie_izquierdo(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
-     quiver3(p_tobillo_izquierdo(i,1),...,
-         p_tobillo_izquierdo(i,2),p_tobillo_izquierdo(i,3),wPie_izquierdo(i,1)*factor_vectores,wPie_izquierdo(i,2).*factor_vectores,wPie_izquierdo(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
-
-     
+     % Posicion del tobillo derecho como linea
+     plot3(p_tobillo_derecho(:,1),p_tobillo_derecho(:,2),p_tobillo_derecho(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
+     hold on
+     % Posicion del tobillo izquierdo como linea
+     plot3(p_tobillo_izquierdo(:,1),p_tobillo_izquierdo(:,2),p_tobillo_izquierdo(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
+     hold on
+     for i=1:30:length(p_cadera_derecha)
+         
+         % Marcadores del sacro
+         plot3(p15(i,1),p15(i,2),p15(i,3),'diamond','LineWidth',line_width,'color',negro);
+         hold on
+         % Marcadores de la cadera derecha
+         plot3(p_cadera_derecha(i,1),p_cadera_derecha(i,2),p_cadera_derecha(i,3),'o','LineWidth',line_width,'color',negro);
+         hold on
+         % Marcadores de la cadera izquierda
+         plot3(p_cadera_izquierda(i,1),p_cadera_izquierda(i,2),p_cadera_izquierda(i,3),'square','LineWidth',line_width,'color',negro);
+         hold on
+         % Marcadores de la rodilla derecha
+         plot3(p_rodilla_derecha(i,1),p_rodilla_derecha(i,2),p_rodilla_derecha(i,3),'*','LineWidth',line_width,'color',negro);
+         hold on
+         % Marcadores de la rodilla izquierda
+         plot3(p_rodilla_izquierda(i,1),p_rodilla_izquierda(i,2),p_rodilla_izquierda(i,3),'x','LineWidth',line_width,'color',negro);
+         hold on
+         % Marcadores del tobillo derecho
+         plot3(p_tobillo_derecho(i,1),p_tobillo_derecho(i,2),p_tobillo_derecho(i,3),'pentagram','LineWidth',line_width,'color',negro);
+         hold on
+         % Marcadores del tobillo izquierdo
+         plot3(p_tobillo_izquierdo(i,1),p_tobillo_izquierdo(i,2),p_tobillo_izquierdo(i,3),'>','LineWidth',line_width,'color',negro);
+         hold on
+         
+         %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+         % CADERA DERECHA
+         % Vector u
+         quiver3(p_cadera_derecha(i,1),...
+             p_cadera_derecha(i,2),...
+             p_cadera_derecha(i,3),...
+             uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+         % Vector v
+         quiver3(p_cadera_derecha(i,1),...
+             p_cadera_derecha(i,2),...
+             p_cadera_derecha(i,3),...
+             vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+         % Vector w
+         quiver3(p_cadera_derecha(i,1),...
+             p_cadera_derecha(i,2),...
+             p_cadera_derecha(i,3),...
+             wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+         %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+         % CADERA IZQUIERDA
+         % Vector u
+         quiver3(p_cadera_izquierda(i,1),...
+             p_cadera_izquierda(i,2),...
+             p_cadera_izquierda(i,3),...
+             uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+         % Vector v
+         quiver3(p_cadera_izquierda(i,1),...
+             p_cadera_izquierda(i,2),...
+             p_cadera_izquierda(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+         % Vector w
+         quiver3(p_cadera_izquierda(i,1),...
+             p_cadera_izquierda(i,2),...
+             p_cadera_izquierda(i,3),...
+             wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+         %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+         % RODILLA DERECHA
+         % Vector u
+         quiver3(p_rodilla_derecha(i,1),...
+             p_rodilla_derecha(i,2),...
+             p_rodilla_derecha(i,3),...
+             uRodilla_derecha(i,1)*factor_vectores,uRodilla_derecha(i,2)*factor_vectores,uRodilla_derecha(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+         % Vector v
+         quiver3(p_rodilla_derecha(i,1),...
+             p_rodilla_derecha(i,2),...
+             p_rodilla_derecha(i,3),...
+             vRodilla_derecha(i,1)*factor_vectores,vRodilla_derecha(i,2)*factor_vectores,vRodilla_derecha(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+         % Vector w
+         quiver3(p_rodilla_derecha(i,1),...
+             p_rodilla_derecha(i,2),...
+             p_rodilla_derecha(i,3),...
+             wRodilla_derecha(i,1)*factor_vectores,wRodilla_derecha(i,2).*factor_vectores,wRodilla_derecha(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+         %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+         % RODILLA IZQUIERDA
+         % Vector u
+         quiver3(p_rodilla_izquierda(i,1),...
+             p_rodilla_izquierda(i,2),...
+             p_rodilla_izquierda(i,3),...
+             uRodilla_izquierda(i,1)*factor_vectores,uRodilla_izquierda(i,2)*factor_vectores,uRodilla_izquierda(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+         % Vector v
+         quiver3(p_rodilla_izquierda(i,1),...
+             p_rodilla_izquierda(i,2),...
+             p_rodilla_izquierda(i,3),...
+             vRodilla_izquierda(i,1)*factor_vectores,uRodilla_izquierda(i,2)*factor_vectores,uRodilla_izquierda(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+         % Vector w
+         quiver3(p_rodilla_izquierda(i,1),...
+             p_rodilla_izquierda(i,2),...
+             p_rodilla_izquierda(i,3),...
+             wRodilla_izquierda(i,1)*factor_vectores,wRodilla_izquierda(i,2).*factor_vectores,wRodilla_izquierda(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+         %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+         % TOBILLO DERECHO
+         % Vector u
+         quiver3(p_tobillo_derecho(i,1),...
+             p_tobillo_derecho(i,2),...
+             p_tobillo_derecho(i,3),...
+             uPie_derecho(i,1)*factor_vectores,uPie_derecho(i,2)*factor_vectores,uPie_derecho(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+         % Vector v
+         quiver3(p_tobillo_derecho(i,1),...
+             p_tobillo_derecho(i,2),...
+             p_tobillo_derecho(i,3),...
+             vPie_derecho(i,1)*factor_vectores,vPie_derecho(i,2)*factor_vectores,vPie_derecho(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+         % Vector w
+         quiver3(p_tobillo_derecho(i,1),...
+             p_tobillo_derecho(i,2),...
+             p_tobillo_derecho(i,3),wPie_derecho(i,1)*factor_vectores,wPie_derecho(i,2).*factor_vectores,wPie_derecho(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+         %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+         % TOBILLO IZQUIERDO
+         % Vector u
+         quiver3(p_tobillo_izquierdo(i,1),...
+             p_tobillo_izquierdo(i,2),...
+             p_tobillo_izquierdo(i,3),...
+             uPie_izquierdo(i,1)*factor_vectores,uPie_izquierdo(i,2)*factor_vectores,uPie_izquierdo(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+         % Vector v
+         quiver3(p_tobillo_izquierdo(i,1),...
+             p_tobillo_izquierdo(i,2),...
+             p_tobillo_izquierdo(i,3),...
+             vPie_izquierdo(i,1)*factor_vectores,vPie_izquierdo(i,2)*factor_vectores,vPie_izquierdo(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+         % Vector w
+         quiver3(p_tobillo_izquierdo(i,1),...
+             p_tobillo_izquierdo(i,2),...
+             p_tobillo_izquierdo(i,3),...
+             wPie_izquierdo(i,1)*factor_vectores,wPie_izquierdo(i,2).*factor_vectores,wPie_izquierdo(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+         
+     end
+     grid on
+     title('Trayectoria de los segmentos articulares junto con los vectores $\vec{u}$, $\vec{v}$ y $\vec{w}$','Interpreter','latex')
+     xlabel('x [m]','Interpreter','latex');
+     ylabel('y [m]','Interpreter','latex');
+     zlabel('z [m]','Interpreter','latex');
+     legend({'Marcador sacro (p15)',...,
+         'Posicion cadera derecha ',...,
+         'Posicion cadera izquierda ',...,
+         'Posicion rodilla derecha ',...,
+         'Posicion rodilla izquierda ',...,
+         'Posicion tobillo derecho ',...,
+         'Posicion tobillo izquierdo ',...,
+         '$\vec{u}$',...,
+         '$\vec{v}$',...,
+         '$\vec{w}$'},'Interpreter','latex')
  end
- grid on
- title('Trayectoria de los segmentos articulares junto con los vectores $\vec{u}$, $\vec{v}$ y $\vec{w}$','Interpreter','latex')
-xlabel('x [m]','Interpreter','latex');
-ylabel('y [m]','Interpreter','latex');
-zlabel('z [m]','Interpreter','latex');
- legend({'Marcador sacro (p15)',...,
-     'Posicion cadera derecha ',...,
-     'Posicion cadera izquierda ',...,
-      'Posicion rodilla derecha ',...,
-       'Posicion rodilla izquierda ',...,
-        'Posicion tobillo derecho ',...,
-       'Posicion tobillo izquierdo ',...,
-     '$\vec{u}$',...,
-     '$\vec{v}$',...,
-     '$\vec{w}$'},'Interpreter','latex')
+ 
+ % ===========================================================================================================================================================%
+
+ % CALCULOS DE LOS CENTROS DE MASA
+ 
+ % Muslo derecho
+ centro_masa_muslo_derecho = p_cadera_derecha + 0.39*(p_rodilla_derecha - p_cadera_derecha);
+ % Muslo derecho
+ centro_masa_muslo_izquierdo = p_cadera_izquierda + 0.39*(p_rodilla_izquierda - p_cadera_izquierda);
+ 
+ % Pierna derecha
+ centro_masa_pierna_derecha = p_rodilla_derecha + 0.42*(p_tobillo_derecho - p_rodilla_derecha);
+ % Pierna izquierda
+ centro_masa_pierna_izquierda = p_rodilla_izquierda + 0.42*(p_tobillo_izquierdo - p_rodilla_izquierda);
+ 
+ % Pie derecho
+ centro_masa_pie_derecho = p_tobillo_derecho + 0.44*(p_dedo_derecho - p_tobillo_derecho);
+ % Pie izquierdo
+ centro_masa_pie_izquierdo = p_tobillo_izquierdo + 0.44*(p_dedo_izquierdo - p_tobillo_izquierdo);
+ 
+ % ===========================================================================================================================================================%
+
+  % CALCULOS DE i,j,k 
+  
+%     Calculo para la PELVIS
+% ------------   
+  iPelvis  = wPelvis;
+  jPelvis   = uPelvis;
+  kPelvis = vPelvis;
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%  
+%     Calculo para el MUSLO DERECHO
+
+% ------------   iMuslo_derecho  = ( pR.Hip - pR.Knee) / |pR.Hip - pR.Knee|
+numerador           = p_cadera_derecha - p_rodilla_derecha;
+denominador       = sqrt(sum(numerador.^2,2));
+iMuslo_derecho   = numerador./denominador;
+ 
+% ------------   jMuslo_derecho  = ( (p6 - pR.Hip) x (pR.Knee - pR.Hip) ) / |( (p6 - pR.Hip) x (pR.Knee - pR.Hip) )|
+numerador            = cross(p6-p_cadera_derecha, p_rodilla_derecha - p_cadera_derecha);
+denominador        = sqrt(sum(numerador.^2,2));
+jMuslo_derecho    = numerador./denominador;
+
+% ------------   kMuslo_derecho  = iMuslo_derecho x jMuslo_derecho
+kMuslo_derecho    = cross(iMuslo_derecho, jMuslo_derecho);
+
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%  
+%     Calculo para el MUSLO IZQUIERDO
+
+% ------------   iMuslo_izquierdo  = (pL.Hip - pL.Knee)/ |pL.Hip - pL.Knee|
+numerador           = p_cadera_izquierda - p_rodilla_izquierda;
+denominador       = sqrt(sum(numerador.^2,2));
+iMuslo_izquierdo   = numerador./denominador;
+ 
+% ------------   jMuslo_izquierdo  = ( (pL.Knee - pL.Hip) x (p13 - pL.Hip) ) / | (pL.Knee - pL.Hip) x (p13 - pL.Hip)|
+numerador            = cross(p_rodilla_izquierda-p_cadera_izquierda, p13 - p_cadera_izquierda);
+denominador        = sqrt(sum(numerador.^2,2));
+jMuslo_izquierdo    = numerador./denominador;
+
+% ------------   kMuslo_izquierdo  = iMuslo_izquierdo x jMuslo_izquierdo
+kMuslo_izquierdo    = cross(iMuslo_izquierdo, jMuslo_izquierdo);
+
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%  
+%     Calculo para la PIERNA DERECHA
+
+% ------------   iPierna_derecha  = (pR.Knee - pR.Ankle) / |pR.Knee - pR.Ankle|
+numerador           = p_rodilla_derecha - p_tobillo_derecho;
+denominador       = sqrt(sum(numerador.^2,2));
+iPierna_derecha   = numerador./denominador;
+ 
+% ------------   jPierna_derecha  = ( (p5 - pR.Knee) x (pR.Ankle - pR.Knee) ) / |(p5 - pR.Knee) x (pR.Ankle - pR.Knee)|
+numerador            = cross(p5-p_rodilla_derecha, p_tobillo_derecho - p_rodilla_derecha);
+denominador        = sqrt(sum(numerador.^2,2));
+jPierna_derecha    = numerador./denominador;
+
+% ------------   kPierna_derecha  = iPierna_derecha x jPierna_derecha
+kPierna_derecha    = cross(iPierna_derecha, jPierna_derecha);
+
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%  
+%     Calculo para la PIERNA IZQUIERDA
+
+% ------------   iPierna_izquierda  = (pL.Knee - pL.Ankle) / |pL.Knee - pL.Ankle|
+numerador           = p_rodilla_izquierda - p_tobillo_izquierdo;
+denominador       = sqrt(sum(numerador.^2,2));
+iPierna_izquierda   = numerador./denominador;
+ 
+% ------------   jPierna_derecha  = ( (pL.Ankle - pL.Knee) x (p12 - pL.Knee)) / |(pL.Ankle - pL.Knee) x (p12 - pL.Knee)|
+numerador            = cross(p_tobillo_izquierdo-p_rodilla_izquierda, p12 - p_rodilla_izquierda);
+denominador        = sqrt(sum(numerador.^2,2));
+jPierna_izquierda    = numerador./denominador;
+
+% ------------   kPierna_derecha  = iPierna_derecha x jPierna_derecha
+kPierna_izquierda    = cross(iPierna_izquierda, jPierna_izquierda);
+
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%  
+%     Calculo para el PIE DERECHO
+
+% ------------   iPie_derecho  = (p2 - pR.Toe)/ |p2 - pR.Toe|
+numerador           = p2 - p_dedo_derecho;
+denominador       = sqrt(sum(numerador.^2,2));
+iPie_derecho   = numerador./denominador;
+ 
+% ------------   jPie_derecho  = ( (pR.Ankle - p2) x (pR.Toe - p2) ) / |(pR.Ankle - p2) x (pR.Toe - p2) |
+numerador            = cross(p_tobillo_derecho-p2, p_dedo_derecho - p2);
+denominador        = sqrt(sum(numerador.^2,2));
+jPie_derecho    = numerador./denominador;
+
+% ------------   kPie_derecho  = iPie_derecho x jPie_derecho
+kPie_derecho    = cross(iPie_derecho, jPie_derecho);
+
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%  
+%     Calculo para el PIE IZQUIERDO
+
+% ------------   iPie_izquierdo  = (p9 - pL.Toe) / |p9 - pL.Toe|
+numerador           = p9 - p_dedo_izquierdo;
+denominador       = sqrt(sum(numerador.^2,2));
+iPie_izquierdo   = numerador./denominador;
+ 
+% ------------   jPie_izquierdo  = ( (pL.Ankle - p9) x (pL.Toe - p9) ) / |(pL.Ankle - p9) x (pL.Toe - p9) |
+numerador            = cross(p_tobillo_izquierdo-p9, p_dedo_izquierdo - p9);
+denominador        = sqrt(sum(numerador.^2,2));
+jPie_izquierdo    = numerador./denominador;
+
+% ------------   kPie_izquierdo  = iPie_izquierdo x jPie_izquierdo
+kPie_izquierdo    = cross(iPie_izquierdo, jPie_izquierdo);
+
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+
+% PLOTS DE i,j,k y LOS CENTROS DE MASA
+if plotear_ijk_centros_masa
+    figure
+    if plotear_ijk_centros_masa_y_posiciones_articulares
+        % Posicion articular de la cadera derecha
+        plot3(p_cadera_derecha(:,1),p_cadera_derecha(:,2),p_cadera_derecha(:,3),'LineWidth',line_width);
+        hold on
+        % Posicion articular de la cadera izquierda
+        plot3(p_cadera_izquierda(:,1),p_cadera_izquierda(:,2),p_cadera_izquierda(:,3),'LineWidth',line_width);
+        hold on
+        % Posicion articular de la rodilla derecha
+        plot3(p_rodilla_derecha(:,1),p_rodilla_derecha(:,2),p_rodilla_derecha(:,3),'LineWidth',line_width);
+        hold on
+        % Posicion articular de la rodilla izquierda
+        plot3(p_rodilla_izquierda(:,1),p_rodilla_izquierda(:,2),p_rodilla_izquierda(:,3),'LineWidth',line_width);
+        hold on
+        % Posicion articular del tobillo derecho
+        plot3(p_tobillo_derecho(:,1),p_tobillo_derecho(:,2),p_tobillo_derecho(:,3),'LineWidth',line_width);
+        hold on
+        % Posicion articular del tobillo izquierdo
+        plot3(p_tobillo_izquierdo(:,1),p_tobillo_izquierdo(:,2),p_tobillo_izquierdo(:,3),'LineWidth',line_width);
+        hold on
+    end
+    % Se hace un plot de los centros de masa
+    % Marcadores de la pelvis
+    plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
+    hold on
+    % Marcadores del centro de masa del muslo derecho
+    plot3(centro_masa_muslo_derecho(:,1),centro_masa_muslo_derecho(:,2),centro_masa_muslo_derecho(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
+    hold on
+    % Marcadores del centro de masa del muslo izquierdo
+    plot3(centro_masa_muslo_izquierdo(:,1),centro_masa_muslo_izquierdo(:,2),centro_masa_muslo_izquierdo(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
+    hold on
+    % Marcadores del centro de masa de la pierna derecha
+    plot3(centro_masa_pierna_derecha(:,1),centro_masa_pierna_derecha(:,2),centro_masa_pierna_derecha(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
+    hold on
+    % Marcadores del centro de masa de la pierna izquierda
+    plot3(centro_masa_pierna_izquierda(:,1),centro_masa_pierna_izquierda(:,2),centro_masa_pierna_izquierda(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
+    hold on
+    % Marcadores del centro de masa del pie derecho
+    plot3(centro_masa_pie_derecho(:,1),centro_masa_pie_derecho(:,2),centro_masa_pie_derecho(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
+    hold on
+    % Marcadores del centro de masa del pie izquierdo
+    plot3(centro_masa_pie_izquierdo(:,1),centro_masa_pie_izquierdo(:,2),centro_masa_pie_izquierdo(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
+    hold on
+    
+    % Se plotean los vectores
+    for i=1:50:length(centro_masa_muslo_derecho)
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % Se plotean los marcadores donde luego se van a plotear los vectores
+        %Marcadores de la pelvis
+        plot3(p15(i,1),p15(i,2),p15(i,3),'diamond','LineWidth',line_width,'color',negro);
+        hold on
+        
+        % Marcadores del centro de masa del muslo derecho
+        plot3(centro_masa_muslo_derecho(i,1),centro_masa_muslo_derecho(i,2),centro_masa_muslo_derecho(i,3),'o','LineWidth',line_width,'color',negro);
+        hold on
+        
+        % Marcadores del centro de masa del muslo izquierdo
+        plot3(centro_masa_muslo_izquierdo(i,1),centro_masa_muslo_izquierdo(i,2),centro_masa_muslo_izquierdo(i,3),'square','LineWidth',line_width,'color',negro);
+        hold on
+        
+        % Marcadores del centro de masa de la pierna derecha
+        plot3(centro_masa_pierna_derecha(i,1),centro_masa_pierna_derecha(i,2),centro_masa_pierna_derecha(i,3),'*','LineWidth',line_width,'color',negro);
+        hold on
+        
+        % Marcadores del centro de masa de la pierna izquierda
+        plot3(centro_masa_pierna_izquierda(i,1),centro_masa_pierna_izquierda(i,2),centro_masa_pierna_izquierda(i,3),'x','LineWidth',line_width,'color',negro);
+        hold on
+        
+        % Marcadores del centro de masa del pie derecho
+        plot3(centro_masa_pie_derecho(i,1),centro_masa_pie_derecho(i,2),centro_masa_pie_derecho(i,3),'pentagram','LineWidth',line_width,'color',negro);
+        hold on
+        
+        % Marcadores del centro de masa del pie izquierdo
+        plot3(centro_masa_pie_izquierdo(i,1),centro_masa_pie_izquierdo(i,2),centro_masa_pie_izquierdo(i,3),'>','LineWidth',line_width,'color',negro);
+        hold on
+        
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % SE PLOTEAN LOS VECTORES i j k
+        % i,j,k de la pelvis
+        quiver3(p15(i,1),p15(i,2),p15(i,3),iPelvis(i,1)*factor_vectores,iPelvis(i,2)*factor_vectores,iPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        quiver3(p15(i,1),p15(i,2),p15(i,3),jPelvis(i,1)*factor_vectores,jPelvis(i,2)*factor_vectores,jPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        quiver3(p15(i,1),p15(i,2),p15(i,3),kPelvis(i,1)*factor_vectores,kPelvis(i,2).*factor_vectores,kPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+        
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % MUSLO DERECHO
+        % i del muslo derecho
+        quiver3(centro_masa_muslo_derecho(i,1),...
+            centro_masa_muslo_derecho(i,2),...
+            centro_masa_muslo_derecho(i,3),...
+            iMuslo_derecho(i,1)*factor_vectores,iMuslo_derecho(i,2)*factor_vectores,iMuslo_derecho(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        % j del muslo derecho
+        quiver3(centro_masa_muslo_derecho(i,1),...
+            centro_masa_muslo_derecho(i,2),...
+            centro_masa_muslo_derecho(i,3),...
+            jMuslo_derecho(i,1)*factor_vectores,jMuslo_derecho(i,2)*factor_vectores,jMuslo_derecho(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        % k del muslo derecho
+        quiver3(centro_masa_muslo_derecho(i,1),...
+            centro_masa_muslo_derecho(i,2),...
+            centro_masa_muslo_derecho(i,3),...
+            kMuslo_derecho(i,1)*factor_vectores,kMuslo_derecho(i,2).*factor_vectores,kMuslo_derecho(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+        
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % MUSLO IZQUIERDO
+        % i del muslo izquierdo
+        quiver3(centro_masa_muslo_izquierdo(i,1),...
+            centro_masa_muslo_izquierdo(i,2),...
+            centro_masa_muslo_izquierdo(i,3),...
+            iMuslo_izquierdo(i,1)*factor_vectores,iMuslo_izquierdo(i,2)*factor_vectores,iMuslo_izquierdo(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        % j del muslo izquierdo
+        quiver3(centro_masa_muslo_izquierdo(i,1),...
+            centro_masa_muslo_izquierdo(i,2),...
+            centro_masa_muslo_izquierdo(i,3),...
+            jMuslo_izquierdo(i,1)*factor_vectores,jMuslo_izquierdo(i,2)*factor_vectores,jMuslo_izquierdo(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        % k del muslo izquierdo
+        quiver3(centro_masa_muslo_izquierdo(i,1),...
+            centro_masa_muslo_izquierdo(i,2),...
+            centro_masa_muslo_izquierdo(i,3),...
+            kMuslo_izquierdo(i,1)*factor_vectores,kMuslo_izquierdo(i,2).*factor_vectores,kMuslo_izquierdo(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % PIERNA DERECHA
+        % i de la pierna derecha
+        quiver3(centro_masa_pierna_derecha(i,1),...
+            centro_masa_pierna_derecha(i,2),...
+            centro_masa_pierna_derecha(i,3),...
+            iPierna_derecha(i,1)*factor_vectores,iPierna_derecha(i,2)*factor_vectores,iPierna_derecha(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        % j de la pierna derecha
+        quiver3(centro_masa_pierna_derecha(i,1),...
+            centro_masa_pierna_derecha(i,2),...
+            centro_masa_pierna_derecha(i,3),...
+            jPierna_derecha(i,1)*factor_vectores,jPierna_derecha(i,2)*factor_vectores,jPierna_derecha(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        % k de la pierna derecha
+        quiver3(centro_masa_pierna_derecha(i,1),...
+            centro_masa_pierna_derecha(i,2),...
+            centro_masa_pierna_derecha(i,3),...
+            kPierna_derecha(i,1)*factor_vectores,kPierna_derecha(i,2).*factor_vectores,kPierna_derecha(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % PIERNA IZQUIERDA
+        % i de la pierna izquierda
+        quiver3(centro_masa_pierna_izquierda(i,1),...
+            centro_masa_pierna_izquierda(i,2),...
+            centro_masa_pierna_izquierda(i,3),...
+            iPierna_izquierda(i,1)*factor_vectores,iPierna_izquierda(i,2)*factor_vectores,iPierna_izquierda(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        % j de la pierna izquierda
+        quiver3(centro_masa_pierna_izquierda(i,1),...
+            centro_masa_pierna_izquierda(i,2),...
+            centro_masa_pierna_izquierda(i,3),...
+            jPierna_izquierda(i,1)*factor_vectores,jPierna_izquierda(i,2)*factor_vectores,jPierna_izquierda(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        % k de la pierna izquierda
+        quiver3(centro_masa_pierna_izquierda(i,1),...
+            centro_masa_pierna_izquierda(i,2),...
+            centro_masa_pierna_izquierda(i,3),...
+            kPierna_izquierda(i,1)*factor_vectores,kPierna_izquierda(i,2).*factor_vectores,kPierna_izquierda(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        %  PIE DERECHO
+        % i del pie derecho
+        quiver3(centro_masa_pie_derecho(i,1),...
+            centro_masa_pie_derecho(i,2),...
+            centro_masa_pie_derecho(i,3),...
+            iPie_derecho(i,1)*factor_vectores,iPie_derecho(i,2)*factor_vectores,iPie_derecho(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        % j del pie derecho
+        quiver3(centro_masa_pie_derecho(i,1),...
+            centro_masa_pie_derecho(i,2),...
+            centro_masa_pie_derecho(i,3),...
+            jPie_derecho(i,1)*factor_vectores,jPie_derecho(i,2)*factor_vectores,jPie_derecho(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        % k del pie derecho
+        quiver3(centro_masa_pie_derecho(i,1),...
+            centro_masa_pie_derecho(i,2),...
+            centro_masa_pie_derecho(i,3),...
+            kPie_derecho(i,1)*factor_vectores,kPie_derecho(i,2).*factor_vectores,kPie_derecho(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % PIE IZQUIERDO
+        % i del pie izquierdo
+        quiver3(centro_masa_pie_izquierdo(i,1),...
+            centro_masa_pie_izquierdo(i,2),...
+            centro_masa_pie_izquierdo(i,3),...
+            iPie_izquierdo(i,1)*factor_vectores,iPie_izquierdo(i,2)*factor_vectores,iPie_izquierdo(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        % j del pie izquierdo
+        quiver3(centro_masa_pie_izquierdo(i,1),...
+            centro_masa_pie_izquierdo(i,2),...
+            centro_masa_pie_izquierdo(i,3),...
+            jPie_izquierdo(i,1)*factor_vectores,jPie_izquierdo(i,2)*factor_vectores,jPie_izquierdo(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        % k del pie izquierdo
+        quiver3(centro_masa_pie_izquierdo(i,1),...
+            centro_masa_pie_izquierdo(i,2),...
+            centro_masa_pie_izquierdo(i,3),...
+            kPie_izquierdo(i,1)*factor_vectores,kPie_izquierdo(i,2).*factor_vectores,kPie_izquierdo(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+    end
+    
+    grid on
+    title('Centros de masa junto con los vectores $\vec{i}$, $\vec{j}$ y $\vec{k}$ (PA = posicion articular).','Interpreter','latex')
+    xlabel('x [m]','Interpreter','latex');
+    ylabel('y [m]','Interpreter','latex');
+    zlabel('z [m]','Interpreter','latex');
+    
+    if plotear_ijk_centros_masa_y_posiciones_articulares
+        title('Centros de masa junto con los vectores $\vec{i}$, $\vec{j}$ y $\vec{k}$ (PA = posicion articular).','Interpreter','latex')
+        legend({'PA cadera derecha',...
+            'PA cadera izquierda',...
+            'PA rodilla derecha',...
+            'PA rodilla izquierda',...
+            'PA tobillo derecho',...
+            'PA tobillo izquierdo',...
+            'Marcador sacro (p15)',...,
+            'Muslo derecho ',...,
+            'Muslo izquierdo ',...,
+            'Pierna derecha',...,
+            'Pierna izquierda ',...,
+            'Pie derecho ',...,
+            'Pie izquierdo ',...,
+            '$\vec{u}$',...,
+            '$\vec{v}$',...,
+            '$\vec{w}$'},'Interpreter','latex')
+    else
+        title('Centros de masa junto con los vectores $\vec{i}$, $\vec{j}$ y $\vec{k}$.','Interpreter','latex')
+        legend({'Marcador sacro (p15)',...,
+            'Muslo derecho ',...,
+            'Muslo izquierdo ',...,
+            'Pierna derecha',...,
+            'Pierna izquierda ',...,
+            'Pie derecho ',...,
+            'Pie izquierdo ',...,
+            '$\vec{u}$',...,
+            '$\vec{v}$',...,
+            '$\vec{w}$'},'Interpreter','latex')
+    end
+end
