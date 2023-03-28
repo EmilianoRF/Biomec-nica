@@ -6,8 +6,8 @@ clc % limpia la consola
 
 %  VARIABLES PARA CONTROLAR LAS FIGURAS A MOSTRAR
 plotear_uvw_centros_articulares = false;
-plotear_ijk_centros_masa  = true;
-plotear_ijk_centros_masa_y_posiciones_articulares = true;
+plotear_ijk_centros_masa  = false;
+plotear_ijk_centros_masa_y_posiciones_articulares = false;
 
 %  VARIABLES EXTRAS
 rojo  = [1 0 0];
@@ -795,3 +795,51 @@ if plotear_ijk_centros_masa
             '$\vec{k}$'},'Interpreter','latex')
     end
 end
+
+% ===========================================================================================================================================================%
+
+ %PLOTS DE MARCADORES Y CENTROS ARTICULARES
+ 
+ figure
+ plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',line_width);
+ hold on
+ plot3(p7(:,1),p7(:,2),p7(:,3),'LineWidth',line_width);
+ hold on
+ plot3(p14(:,1),p14(:,2),p14(:,3),'LineWidth',line_width);
+ hold on
+ plot3(p5(:,1),p5(:,2),p5(:,3),'LineWidth',line_width);
+ hold on
+ plot3(p12(:,1),p12(:,2),p12(:,3),'LineWidth',line_width);
+ hold on
+ plot3(p2(:,1),p2(:,2),p2(:,3),'LineWidth',line_width);
+ hold on
+ plot3(p9(:,1),p9(:,2),p9(:,3),'LineWidth',line_width);
+ hold on
+ plot3(p_cadera_derecha(:,1),p_cadera_derecha(:,2),p_cadera_derecha(:,3),'--','LineWidth',line_width);
+ hold on
+ plot3(p_cadera_izquierda(:,1),p_cadera_izquierda(:,2),p_cadera_izquierda(:,3),'--','LineWidth',line_width);
+ hold on
+ plot3(p_rodilla_derecha(:,1),p_rodilla_derecha(:,2),p_rodilla_derecha(:,3),'--','LineWidth',line_width);
+hold on
+ plot3(p_rodilla_izquierda(:,1),p_rodilla_izquierda(:,2),p_rodilla_izquierda(:,3),'--','LineWidth',line_width);
+hold on
+ plot3(p_tobillo_derecho(:,1),p_tobillo_derecho(:,2),p_tobillo_derecho(:,3),'--','LineWidth',line_width);
+hold on
+ plot3(p_tobillo_izquierdo(:,1),p_tobillo_izquierdo(:,2),p_tobillo_izquierdo(:,3),'--','LineWidth',line_width);
+title('Marcadores y posiciones articulares','Interpreter','latex')
+grid on
+legend({'Marcador (p15)',...
+    'Marcador (p7)',...
+    'Marcador (p14)',...
+    'Marcador (p5)',...
+     'Marcador (p12)',...
+     'Marcador (p2)',...
+     'Marcador (p9)',...
+    'Cadera derecha',...
+    'Cadera izquierda',...
+    'Rodilla derecha',...
+    'Rodilla izquierda',...
+    'Tobillo derecho',...
+    'Tobillo izquierdo'
+    },'Interpreter','latex')
+
