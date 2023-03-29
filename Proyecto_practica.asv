@@ -5,10 +5,11 @@ clc % limpia la consola
 % ===========================================================================================================================================================%
 
 %  VARIABLES PARA CONTROLAR LAS FIGURAS A MOSTRAR
-plotear_uvw_centros_articulares = false;
-plotear_ijk_centros_masa  = false;
+plotear_uvw_centros_articulares = true;
+plotear_ijk_centros_masa  = true;
 plotear_ijk_centros_masa_y_posiciones_articulares = false;
-plotear_marcadores_y_centros_articulares = false;
+plotear_marcadores_y_posiciones_articulares = true;
+plotear_centros_masa_y_posiciones_articulares = true;
 %  VARIABLES EXTRAS
 rojo  = [1 0 0];
 verde  = [0.051 0.529 0.051 ];
@@ -298,7 +299,7 @@ vPie_izquierdo       = cross(wPie_izquierdo,uPie_izquierdo);
      % Posicion del tobillo izquierdo como linea
      plot3(p_tobillo_izquierdo(:,1),p_tobillo_izquierdo(:,2),p_tobillo_izquierdo(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
      hold on
-     for i=1:30:length(p_cadera_derecha)
+     for i=1:15:length(p_cadera_derecha)
          
          % Marcadores del sacro
          plot3(p15(i,1),p15(i,2),p15(i,3),'diamond','LineWidth',line_width,'color',negro);
@@ -541,13 +542,13 @@ numerador           = p2 - p_dedo_derecho;
 denominador       = sqrt(sum(numerador.^2,2));
 iPie_derecho   = numerador./denominador;
  
-% ------------   jPie_derecho  = ( (pR.Ankle - p2) x (pR.Toe - p2) ) / |(pR.Ankle - p2) x (pR.Toe - p2) |
+% ------------   kPie_derecho  = ( (pR.Ankle - p2) x (pR.Toe - p2) ) / |(pR.Ankle - p2) x (pR.Toe - p2) |
 numerador            = cross(p_tobillo_derecho-p2, p_dedo_derecho - p2);
 denominador        = sqrt(sum(numerador.^2,2));
-jPie_derecho    = numerador./denominador;
+kPie_derecho    = numerador./denominador;
 
-% ------------   kPie_derecho  = iPie_derecho x jPie_derecho
-kPie_derecho    = cross(iPie_derecho, jPie_derecho);
+% ------------   jPie_derecho  = kPie_derecho x iPie_derecho
+jPie_derecho    = cross(kPie_derecho, iPie_derecho);
 
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%  
 %     Calculo para el PIE IZQUIERDO
@@ -557,13 +558,13 @@ numerador           = p9 - p_dedo_izquierdo;
 denominador       = sqrt(sum(numerador.^2,2));
 iPie_izquierdo   = numerador./denominador;
  
-% ------------   jPie_izquierdo  = ( (pL.Ankle - p9) x (pL.Toe - p9) ) / |(pL.Ankle - p9) x (pL.Toe - p9) |
+% ------------   kPie_izquierdo  = ( (pL.Ankle - p9) x (pL.Toe - p9) ) / |(pL.Ankle - p9) x (pL.Toe - p9) |
 numerador            = cross(p_tobillo_izquierdo-p9, p_dedo_izquierdo - p9);
 denominador        = sqrt(sum(numerador.^2,2));
-jPie_izquierdo    = numerador./denominador;
+kPie_izquierdo    = numerador./denominador;
 
-% ------------   kPie_izquierdo  = iPie_izquierdo x jPie_izquierdo
-kPie_izquierdo    = cross(iPie_izquierdo, jPie_izquierdo);
+% ------------   jPie_izquierdo  = kPie_izquierdo x iPie_izquierdo
+jPie_izquierdo    = cross(kPie_izquierdo, iPie_izquierdo);
 
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
 
@@ -828,8 +829,11 @@ end
      plot3(p_tobillo_derecho(:,1),p_tobillo_derecho(:,2),p_tobillo_derecho(:,3),'--','LineWidth',line_width);
      hold on
      plot3(p_tobillo_izquierdo(:,1),p_tobillo_izquierdo(:,2),p_tobillo_izquierdo(:,3),'--','LineWidth',line_width);
-     title('Marcadores y posiciones articulares','Interpreter','latex')
+     title('Marcadores y posiciones articulares (PA)','Interpreter','latex')
      grid on
+    xlabel('x [m]','Interpreter','latex');
+    ylabel('y [m]','Interpreter','latex');
+    zlabel('z [m]','Interpreter','latex');
      legend({'Marcador (p15)',...
          'Marcador (p7)',...
          'Marcador (p14)',...
@@ -837,18 +841,18 @@ end
          'Marcador (p12)',...
          'Marcador (p2)',...
          'Marcador (p9)',...
-         'Cadera derecha',...
-         'Cadera izquierda',...
-         'Rodilla derecha',...
-         'Rodilla izquierda',...
-         'Tobillo derecho',...
-         'Tobillo izquierdo'
+         'PA cadera derecha',...
+         'PA  cadera izquierda',...
+         'PA  rodilla derecha',...
+         'PA rodilla izquierda',...
+         'PA robillo derecho',...
+         'PA tobillo izquierdo'
          },'Interpreter','latex')
  end
  %===========================================================================================================================================================%
  % PLOTS DE LOS CENTROS DE MASA Y POSICIONES ARTICULARES
-  if plotear_marcadores_y_centros_articulares
-     % Plot marcadores
+  if plotear_centros_masa_y_posiciones_articulares
+     % Plot centros de masa
      figure
      plot3(centro_masa_muslo_derecho(:,1),...
          centro_masa_muslo_derecho(:,2),...
@@ -866,11 +870,13 @@ end
          centro_masa_pierna_izquierda(:,2),...
          centro_masa_pierna_izquierda(:,3),'LineWidth',line_width);
      hold on
-     plot3(p12(:,1),p12(:,2),p12(:,3),'LineWidth',line_width);
+     plot3(centro_masa_pie_derecho(:,1),...
+         centro_masa_pie_derecho(:,2),...
+         centro_masa_pie_derecho(:,3),'LineWidth',line_width);
      hold on
-     plot3(p2(:,1),p2(:,2),p2(:,3),'LineWidth',line_width);
-     hold on
-     plot3(p9(:,1),p9(:,2),p9(:,3),'LineWidth',line_width);
+     plot3(centro_masa_pie_izquierdo(:,1),...
+         centro_masa_pie_izquierdo(:,2),...
+         centro_masa_pie_izquierdo(:,3),'LineWidth',line_width);
      hold on
      %Plot posiciones articulares
      plot3(p_cadera_derecha(:,1),p_cadera_derecha(:,2),p_cadera_derecha(:,3),'--','LineWidth',line_width);
@@ -884,23 +890,27 @@ end
      plot3(p_tobillo_derecho(:,1),p_tobillo_derecho(:,2),p_tobillo_derecho(:,3),'--','LineWidth',line_width);
      hold on
      plot3(p_tobillo_izquierdo(:,1),p_tobillo_izquierdo(:,2),p_tobillo_izquierdo(:,3),'--','LineWidth',line_width);
-     title('Marcadores y posiciones articulares','Interpreter','latex')
+     title('Centros de masa (CM) y posiciones articulares (PA)','Interpreter','latex')
      grid on
-     legend({'Marcador (p15)',...
-         'Marcador (p7)',...
-         'Marcador (p14)',...
-         'Marcador (p5)',...
-         'Marcador (p12)',...
-         'Marcador (p2)',...
-         'Marcador (p9)',...
-         'Cadera derecha',...
-         'Cadera izquierda',...
-         'Rodilla derecha',...
-         'Rodilla izquierda',...
-         'Tobillo derecho',...
-         'Tobillo izquierdo'
+    xlabel('x [m]','Interpreter','latex');
+    ylabel('y [m]','Interpreter','latex');
+    zlabel('z [m]','Interpreter','latex');
+     legend({'CM muslo derecho',...
+         'CM muslo izquierdo',...
+         'CM pierna derecha',...
+         'CM pierna izquierda',...
+         'CM pie derecho',...
+         'CM pie izquierdo',...
+         'PA cadera derecha',...
+         'PA cadera izquierda',...
+         'PA rodilla derecha',...
+         'PA rodilla izquierda',...
+         'PA tobillo derecho',...
+         'PA tobillo izquierdo'
          },'Interpreter','latex')
- end
+  end
+
+%===========================================================================================================================================================%
  
  
  

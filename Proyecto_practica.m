@@ -5,11 +5,11 @@ clc % limpia la consola
 % ===========================================================================================================================================================%
 
 %  VARIABLES PARA CONTROLAR LAS FIGURAS A MOSTRAR
-plotear_uvw_centros_articulares = false;
+plotear_uvw_centros_articulares = true;
 plotear_ijk_centros_masa  = true;
 plotear_ijk_centros_masa_y_posiciones_articulares = false;
-plotear_marcadores_y_centros_articulares = false;
-plotear_centros_masa_y_posiciones_articulares = false;
+plotear_marcadores_y_posiciones_articulares = true;
+plotear_centros_masa_y_posiciones_articulares = true;
 %  VARIABLES EXTRAS
 rojo  = [1 0 0];
 verde  = [0.051 0.529 0.051 ];
@@ -800,7 +800,7 @@ end
 % ===========================================================================================================================================================%
 
  %PLOTS DE MARCADORES Y CENTROS ARTICULARES
- if plotear_marcadores_y_centros_articulares
+ if plotear_marcadores_y_posiciones_articulares
      % Plot marcadores
      figure
      plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',line_width);
@@ -829,8 +829,11 @@ end
      plot3(p_tobillo_derecho(:,1),p_tobillo_derecho(:,2),p_tobillo_derecho(:,3),'--','LineWidth',line_width);
      hold on
      plot3(p_tobillo_izquierdo(:,1),p_tobillo_izquierdo(:,2),p_tobillo_izquierdo(:,3),'--','LineWidth',line_width);
-     title('Marcadores y posiciones articulares','Interpreter','latex')
+     title('Marcadores y posiciones articulares (PA)','Interpreter','latex')
      grid on
+    xlabel('x [m]','Interpreter','latex');
+    ylabel('y [m]','Interpreter','latex');
+    zlabel('z [m]','Interpreter','latex');
      legend({'Marcador (p15)',...
          'Marcador (p7)',...
          'Marcador (p14)',...
@@ -838,18 +841,18 @@ end
          'Marcador (p12)',...
          'Marcador (p2)',...
          'Marcador (p9)',...
-         'Cadera derecha',...
-         'Cadera izquierda',...
-         'Rodilla derecha',...
-         'Rodilla izquierda',...
-         'Tobillo derecho',...
-         'Tobillo izquierdo'
+         'PA cadera derecha',...
+         'PA  cadera izquierda',...
+         'PA  rodilla derecha',...
+         'PA rodilla izquierda',...
+         'PA robillo derecho',...
+         'PA tobillo izquierdo'
          },'Interpreter','latex')
  end
  %===========================================================================================================================================================%
  % PLOTS DE LOS CENTROS DE MASA Y POSICIONES ARTICULARES
   if plotear_centros_masa_y_posiciones_articulares
-     % Plot marcadores
+     % Plot centros de masa
      figure
      plot3(centro_masa_muslo_derecho(:,1),...
          centro_masa_muslo_derecho(:,2),...
@@ -889,6 +892,9 @@ end
      plot3(p_tobillo_izquierdo(:,1),p_tobillo_izquierdo(:,2),p_tobillo_izquierdo(:,3),'--','LineWidth',line_width);
      title('Centros de masa (CM) y posiciones articulares (PA)','Interpreter','latex')
      grid on
+    xlabel('x [m]','Interpreter','latex');
+    ylabel('y [m]','Interpreter','latex');
+    zlabel('z [m]','Interpreter','latex');
      legend({'CM muslo derecho',...
          'CM muslo izquierdo',...
          'CM pierna derecha',...
@@ -902,7 +908,9 @@ end
          'PA tobillo derecho',...
          'PA tobillo izquierdo'
          },'Interpreter','latex')
- end
+  end
+
+%===========================================================================================================================================================%
  
  
  
