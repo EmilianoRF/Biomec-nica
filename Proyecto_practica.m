@@ -5,11 +5,11 @@ clc % limpia la consola
 % ===========================================================================================================================================================%
 
 %  VARIABLES PARA CONTROLAR LAS FIGURAS A MOSTRAR
-plotear_uvw_centros_articulares = true;
-plotear_ijk_centros_masa  = true;
+plotear_uvw_centros_articulares = false;
+plotear_ijk_centros_masa  = false;
 plotear_ijk_centros_masa_y_posiciones_articulares = false;
-plotear_marcadores_y_posiciones_articulares = true;
-plotear_centros_masa_y_posiciones_articulares = true;
+plotear_marcadores_y_posiciones_articulares = false;
+plotear_centros_masa_y_posiciones_articulares = false;
 %  VARIABLES EXTRAS
 rojo  = [1 0 0];
 verde  = [0.051 0.529 0.051 ];
@@ -911,7 +911,100 @@ end
   end
 
 %===========================================================================================================================================================%
- 
- 
- 
+% PLOTS INDIVIDUALES DE LOS i,j,k Y LOS CENTROS ARTICULARES
+
+% Plot de la cadera
+figure
+plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',line_width,'color',negro)
+hold on
+for i=1:50:length(centro_masa_muslo_derecho)
+    % i,j,k de la pelvis
+    quiver3(p15(i,1),p15(i,2),p15(i,3),iPelvis(i,1)*factor_vectores,iPelvis(i,2)*factor_vectores,iPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+    hold on
+    quiver3(p15(i,1),p15(i,2),p15(i,3),jPelvis(i,1)*factor_vectores,jPelvis(i,2)*factor_vectores,jPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+    hold on
+    quiver3(p15(i,1),p15(i,2),p15(i,3),kPelvis(i,1)*factor_vectores,kPelvis(i,2).*factor_vectores,kPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+end
+title('Centro de masa de la cadera  y vectores $\vec{i}$,$\vec{j}$,$\vec{k}$','Interpreter','latex')
+grid on
+xlabel('x [m]','Interpreter','latex');
+ylabel('y [m]','Interpreter','latex');
+zlabel('z [m]','Interpreter','latex');
+legend({'Centro masa cadera',...
+    '$\vec{i}$',...
+    '$\vec{j}$',...
+    '$\vec{k}$'...
+    },'Interpreter','latex')
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+% Plot muslo cadera
+figure
+plot3(centro_masa_muslo_derecho(:,1),centro_masa_muslo_derecho(:,2),centro_masa_muslo_derecho(:,3),'LineWidth',line_width,'color',negro)
+hold on
+for i=1:50:length(centro_masa_muslo_derecho)
+    % i del muslo derecho
+    quiver3(centro_masa_muslo_derecho(i,1),...
+        centro_masa_muslo_derecho(i,2),...
+        centro_masa_muslo_derecho(i,3),...
+        iMuslo_derecho(i,1)*factor_vectores,iMuslo_derecho(i,2)*factor_vectores,iMuslo_derecho(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+    % j del muslo derecho
+    hold  on
+    quiver3(centro_masa_muslo_derecho(i,1),...
+        centro_masa_muslo_derecho(i,2),...
+        centro_masa_muslo_derecho(i,3),...
+        jMuslo_derecho(i,1)*factor_vectores,jMuslo_derecho(i,2)*factor_vectores,jMuslo_derecho(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+    % k del muslo derecho
+    hold on
+    quiver3(centro_masa_muslo_derecho(i,1),...
+        centro_masa_muslo_derecho(i,2),...
+        centro_masa_muslo_derecho(i,3),...
+        kMuslo_derecho(i,1)*factor_vectores,kMuslo_derecho(i,2).*factor_vectores,kMuslo_derecho(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+end
+
+title('Centro de masa muslo derecho y vectores $\vec{i}$,$\vec{j}$,$\vec{k}$','Interpreter','latex')
+grid on
+xlabel('x [m]','Interpreter','latex');
+ylabel('y [m]','Interpreter','latex');
+zlabel('z [m]','Interpreter','latex');
+legend({'Centro masa muslo derecho',...
+    '$\vec{i}$',...
+    '$\vec{j}$',...
+    '$\vec{k}$'...
+    },'Interpreter','latex')
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+% Plot muslo izquierdo
+figure
+plot3(centro_masa_muslo_izquierdo(:,1),centro_masa_muslo_izquierdo(:,2),centro_masa_muslo_izquierdo(:,3),'LineWidth',line_width,'color',negro)
+hold on
+for i=1:50:length(centro_masa_muslo_izquierdo)
+    % i del muslo izquierdo
+    quiver3(centro_masa_muslo_izquierdo(i,1),...
+        centro_masa_muslo_izquierdo(i,2),...
+        centro_masa_muslo_izquierdo(i,3),...
+        iMuslo_izquierdo(i,1)*factor_vectores,iMuslo_izquierdo(i,2)*factor_vectores,iMuslo_izquierdo(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+    % j del muslo izquierdo
+    hold  on
+    quiver3(centro_masa_muslo_izquierdo(i,1),...
+        centro_masa_muslo_izquierdo(i,2),...
+        centro_masa_muslo_izquierdo(i,3),...
+        jMuslo_izquierdo(i,1)*factor_vectores,jMuslo_izquierdo(i,2)*factor_vectores,jMuslo_izquierdo(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+    % k del muslo izquierdo
+    hold on
+    quiver3(centro_masa_muslo_izquierdo(i,1),...
+        centro_masa_muslo_izquierdo(i,2),...
+        centro_masa_muslo_izquierdo(i,3),...
+        kMuslo_izquierdo(i,1)*factor_vectores,kMuslo_izquierdo(i,2).*factor_vectores,kMuslo_izquierdo(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+end
+
+title('Centro de masa muslo izquierdo y vectores $\vec{i}$,$\vec{j}$,$\vec{k}$','Interpreter','latex')
+grid on
+xlabel('x [m]','Interpreter','latex');
+ylabel('y [m]','Interpreter','latex');
+zlabel('z [m]','Interpreter','latex');
+legend({'Centro masa muslo izquierdo',...
+    '$\vec{i}$',...
+    '$\vec{j}$',...
+    '$\vec{k}$'...
+    },'Interpreter','latex')        
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+
  
