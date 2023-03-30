@@ -1019,7 +1019,7 @@ for i=1:50:length(centro_masa_muslo_derecho)
     hold on
     quiver3(p15(i,1),p15(i,2),p15(i,3),kPelvis(i,1)*factor_vectores,kPelvis(i,2).*factor_vectores,kPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
 end
-title('Centro de masa de la pelvis (p15)  y vectores $\vec{i}$,$\vec{j}$,$\vec{k}$','Interpreter','latex')
+title('Centro de masa de la cadera (p15)  y vectores $\vec{i}$,$\vec{j}$,$\vec{k}$','Interpreter','latex')
 grid on
 xlabel('x [m]','Interpreter','latex');
 ylabel('y [m]','Interpreter','latex');
