@@ -264,7 +264,6 @@ p_dedo_izquierdo = p10+0.742*A14*uPie_izquierdo + 1.074*A16*vPie_izquierdo + 0.1
 close all % cierra las ventanas
 clc % limpia la consola
 
-if plotear_uvw_centros_articulares
     figure
     % Posicion del marcador del sacro como linea
     plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
@@ -428,7 +427,6 @@ if plotear_uvw_centros_articulares
         '$\vec{u}$',...,
         '$\vec{v}$',...,
         '$\vec{w}$'},'Interpreter','latex')
-end
 %%  Calculos de los centros de masa.
 % Muslo derecho
 centro_masa_muslo_derecho = p_cadera_derecha + 0.39*(p_rodilla_derecha - p_cadera_derecha);
