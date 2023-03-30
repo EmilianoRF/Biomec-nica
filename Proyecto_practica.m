@@ -935,14 +935,14 @@ title('Centros de masa junto con los vectores $\vec{i}$, $\vec{j}$ y $\vec{k}$ (
 xlabel('x [m]','Interpreter','latex');
 ylabel('y [m]','Interpreter','latex');
 zlabel('z [m]','Interpreter','latex');
-title('Centros de masa junto con los vectores $\vec{i}$, $\vec{j}$ y $\vec{k}$.','Interpreter','latex')
+title('Centros de masa (CM) junto con los vectores $\vec{i}$, $\vec{j}$ y $\vec{k}$.','Interpreter','latex')
 legend({'Marcador sacro (p15)',...,
-    'Muslo derecho ',...,
-    'Muslo izquierdo ',...,
-    'Pierna derecha',...,
-    'Pierna izquierda ',...,
-    'Pie derecho ',...,
-    'Pie izquierdo ',...,
+    'CM muslo derecho ',...,
+    'CM muslo izquierdo ',...,
+    'CM pierna derecha',...,
+    'CM pierna izquierda ',...,
+    'CM pie derecho ',...,
+    'CM pie izquierdo ',...,
     '$\vec{i}$',...,
     '$\vec{j}$',...,
     '$\vec{k}$'},'Interpreter','latex')
