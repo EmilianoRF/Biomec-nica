@@ -6,10 +6,12 @@ azul                          = [0 0 1];
 negro                       = [0 0 0];
 purpura                   = [1, 0.11, 0.612, 0.2];
 factor_vectores     = 1/30;
+paso_vectores       = 10;
 line_width               = 1.75;
+
 % ===========================================================================================================================================================%
 %%  Se importan los datos de la marcha.
-ruta_archivo = '0037_Davis_MarchaDavis_Walking02b2021.c3d';
+ruta_archivo = '0029_Davis_Marcha01_Walking10b2021.c3d';
 h = btkReadAcquisition(ruta_archivo);
 [marcadores, informacionCine] = btkGetMarkers(h);
 [fuerzas, informacionFuerzas] = btkGetForcePlatforms(h);
@@ -286,7 +288,7 @@ clc % limpia la consola
     % Posicion del tobillo izquierdo como linea
     plot3(p_tobillo_izquierdo(:,1),p_tobillo_izquierdo(:,2),p_tobillo_izquierdo(:,3),'LineWidth',0.75,'color',negro,'HandleVisibility','off');
     hold on
-    for i=1:15:length(p_cadera_derecha)
+    for i=1:paso_vectores:length(p_cadera_derecha)
         
         % Marcadores del sacro
         plot3(p15(i,1),p15(i,2),p15(i,3),'diamond','LineWidth',line_width,'color',negro);
@@ -379,7 +381,7 @@ clc % limpia la consola
             wRodilla_izquierda(i,1)*factor_vectores,wRodilla_izquierda(i,2).*factor_vectores,wRodilla_izquierda(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
         %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
         % TOBILLO DERECHO
-        % Vector u
+        % Vector u        
         quiver3(p_tobillo_derecho(i,1),...
             p_tobillo_derecho(i,2),...
             p_tobillo_derecho(i,3),...
@@ -424,6 +426,182 @@ clc % limpia la consola
         'Posicion rodilla izquierda ',...,
         'Posicion tobillo derecho ',...,
         'Posicion tobillo izquierdo ',...,
+        '$\vec{u}$',...,
+        '$\vec{v}$',...,
+        '$\vec{w}$'},'Interpreter','latex')
+%%  Plot u,v,w pelvis
+close all % cierra las ventanas
+clc % limpia la consola
+
+    figure
+    % Posicion de la cadera derecha como linea
+    plot3(p_cadera_derecha(:,1),p_cadera_derecha(:,2),p_cadera_derecha(:,3),'LineWidth',line_width);
+    hold on
+    % Posicion de la cadera izquierda como linea
+    plot3(p_cadera_izquierda(:,1),p_cadera_izquierda(:,2),p_cadera_izquierda(:,3),'LineWidth',line_width);
+    hold on
+    for i=1:paso_vectores:length(p_cadera_derecha)       
+       %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % CADERA DERECHA
+        % Vector u
+        quiver3(p_cadera_derecha(i,1),...
+            p_cadera_derecha(i,2),...
+            p_cadera_derecha(i,3),...
+            uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        hold on
+        % Vector v
+        quiver3(p_cadera_derecha(i,1),...
+            p_cadera_derecha(i,2),...
+            p_cadera_derecha(i,3),...
+            vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        hold on
+        % Vector w
+        quiver3(p_cadera_derecha(i,1),...
+            p_cadera_derecha(i,2),...
+            p_cadera_derecha(i,3),...
+            wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+        hold on
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % CADERA IZQUIERDA
+        % Vector u
+        quiver3(p_cadera_izquierda(i,1),...
+            p_cadera_izquierda(i,2),...
+            p_cadera_izquierda(i,3),...
+            uPelvis(i,1)*factor_vectores,uPelvis(i,2)*factor_vectores,uPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        hold on
+        % Vector v
+        quiver3(p_cadera_izquierda(i,1),...
+            p_cadera_izquierda(i,2),...
+            p_cadera_izquierda(i,3),vPelvis(i,1)*factor_vectores,vPelvis(i,2)*factor_vectores,vPelvis(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        hold on
+        % Vector w
+        quiver3(p_cadera_izquierda(i,1),...
+            p_cadera_izquierda(i,2),...
+            p_cadera_izquierda(i,3),...
+            wPelvis(i,1)*factor_vectores,wPelvis(i,2).*factor_vectores,wPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+    end
+    grid on
+    title('Posiciones articulares (PA) y vectores $\vec{u}$,$\vec{v}$,$\vec{w}$','Interpreter','latex')
+    xlabel('x [m]','Interpreter','latex');
+    ylabel('y [m]','Interpreter','latex');
+    zlabel('z [m]','Interpreter','latex');
+    legend({'PA cadera derecha',...,
+        'PA cadera izquierda',...,
+        '$\vec{u}$',...,
+        '$\vec{v}$',...,
+        '$\vec{w}$'},'Interpreter','latex')
+%%  Plot u,v,w rodillas
+close all % cierra las ventanas
+clc % limpia la consola
+
+    figure
+    % Posicion de la rodilla derecha como linea
+    plot3(p_rodilla_derecha(:,1),p_rodilla_derecha(:,2),p_rodilla_derecha(:,3),'LineWidth',line_width);
+    hold on
+    % Posicion de la rodilla izquierda como linea
+    plot3(p_rodilla_izquierda(:,1),p_rodilla_izquierda(:,2),p_rodilla_izquierda(:,3),'LineWidth',line_width);
+    hold on
+    for i=1:paso_vectores:length(p_cadera_derecha)       
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % RODILLA DERECHA
+        % Vector u
+        quiver3(p_rodilla_derecha(i,1),...
+            p_rodilla_derecha(i,2),...
+            p_rodilla_derecha(i,3),...
+            uRodilla_derecha(i,1)*factor_vectores,uRodilla_derecha(i,2)*factor_vectores,uRodilla_derecha(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        % Vector v
+        quiver3(p_rodilla_derecha(i,1),...
+            p_rodilla_derecha(i,2),...
+            p_rodilla_derecha(i,3),...
+            vRodilla_derecha(i,1)*factor_vectores,vRodilla_derecha(i,2)*factor_vectores,vRodilla_derecha(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        % Vector w
+        quiver3(p_rodilla_derecha(i,1),...
+            p_rodilla_derecha(i,2),...
+            p_rodilla_derecha(i,3),...
+            wRodilla_derecha(i,1)*factor_vectores,wRodilla_derecha(i,2).*factor_vectores,wRodilla_derecha(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % RODILLA IZQUIERDA
+        % Vector u
+        quiver3(p_rodilla_izquierda(i,1),...
+            p_rodilla_izquierda(i,2),...
+            p_rodilla_izquierda(i,3),...
+            uRodilla_izquierda(i,1)*factor_vectores,uRodilla_izquierda(i,2)*factor_vectores,uRodilla_izquierda(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        % Vector v
+        quiver3(p_rodilla_izquierda(i,1),...
+            p_rodilla_izquierda(i,2),...
+            p_rodilla_izquierda(i,3),...
+            vRodilla_izquierda(i,1)*factor_vectores,uRodilla_izquierda(i,2)*factor_vectores,uRodilla_izquierda(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        % Vector w
+        quiver3(p_rodilla_izquierda(i,1),...
+            p_rodilla_izquierda(i,2),...
+            p_rodilla_izquierda(i,3),...
+            wRodilla_izquierda(i,1)*factor_vectores,wRodilla_izquierda(i,2).*factor_vectores,wRodilla_izquierda(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+    end
+    grid on
+    title('Posicion articular (PA) rodillas y $\vec{u}$, $\vec{v}$ y $\vec{w}$','Interpreter','latex')
+    xlabel('x [m]','Interpreter','latex');
+    ylabel('y [m]','Interpreter','latex');
+    zlabel('z [m]','Interpreter','latex');
+    legend({'PA rodilla derecha ',...,
+        'PA rodilla izquierda ',...,
+        '$\vec{u}$',...,
+        '$\vec{v}$',...,
+        '$\vec{w}$'},'Interpreter','latex') 
+%% %%  Plot u,v,w tobillos
+close all % cierra las ventanas
+clc % limpia la consola
+
+    figure
+    % Posicion de la rodilla derecha como linea
+    plot3(p_tobillo_derecho(:,1),p_rodilla_derecha(:,2),p_rodilla_derecha(:,3),'LineWidth',line_width);
+    hold on
+    % Posicion de la rodilla izquierda como linea
+    plot3(p_tobillo_izquierdo(:,1),p_rodilla_izquierda(:,2),p_rodilla_izquierda(:,3),'LineWidth',line_width);
+    hold on
+    for i=1:paso_vectores:length(p_cadera_derecha)       
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % TOBILLO DERECHO
+        % Vector u        
+        quiver3(p_tobillo_derecho(i,1),...
+            p_tobillo_derecho(i,2),...
+            p_tobillo_derecho(i,3),...
+            uPie_derecho(i,1)*factor_vectores,uPie_derecho(i,2)*factor_vectores,uPie_derecho(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        % Vector v
+        quiver3(p_tobillo_derecho(i,1),...
+            p_tobillo_derecho(i,2),...
+            p_tobillo_derecho(i,3),...
+            vPie_derecho(i,1)*factor_vectores,vPie_derecho(i,2)*factor_vectores,vPie_derecho(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        % Vector w
+        quiver3(p_tobillo_derecho(i,1),...
+            p_tobillo_derecho(i,2),...
+            p_tobillo_derecho(i,3),wPie_derecho(i,1)*factor_vectores,wPie_derecho(i,2).*factor_vectores,wPie_derecho(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+        %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+        % TOBILLO IZQUIERDO
+        % Vector u
+        quiver3(p_tobillo_izquierdo(i,1),...
+            p_tobillo_izquierdo(i,2),...
+            p_tobillo_izquierdo(i,3),...
+            uPie_izquierdo(i,1)*factor_vectores,uPie_izquierdo(i,2)*factor_vectores,uPie_izquierdo(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
+        % Vector v
+        quiver3(p_tobillo_izquierdo(i,1),...
+            p_tobillo_izquierdo(i,2),...
+            p_tobillo_izquierdo(i,3),...
+            vPie_izquierdo(i,1)*factor_vectores,vPie_izquierdo(i,2)*factor_vectores,vPie_izquierdo(i,3)*factor_vectores,'color',verde,'LineWidth',line_width)
+        % Vector w
+        quiver3(p_tobillo_izquierdo(i,1),...
+            p_tobillo_izquierdo(i,2),...
+            p_tobillo_izquierdo(i,3),...
+            wPie_izquierdo(i,1)*factor_vectores,wPie_izquierdo(i,2).*factor_vectores,wPie_izquierdo(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
+           end
+    grid on
+    title('Posicion articular (PA) tobillos y $\vec{u}$, $\vec{v}$ y $\vec{w}$','Interpreter','latex')
+    xlabel('x [m]','Interpreter','latex');
+    ylabel('y [m]','Interpreter','latex');
+    zlabel('z [m]','Interpreter','latex');
+    legend({'PA tobillo derecho ',...,
+        'PA tobillo izquierda ',...,
         '$\vec{u}$',...,
         '$\vec{v}$',...,
         '$\vec{w}$'},'Interpreter','latex')
@@ -594,7 +772,7 @@ plot3(centro_masa_pie_izquierdo(:,1),centro_masa_pie_izquierdo(:,2),centro_masa_
 hold on
 
 % Se plotean los vectores
-for i=1:50:length(centro_masa_muslo_derecho)
+for i=1:paso_vectores:length(centro_masa_muslo_derecho)
     %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
     % Se plotean los marcadores donde luego se van a plotear los vectores
     %Marcadores de la pelvis
@@ -787,7 +965,7 @@ plot3(centro_masa_pie_izquierdo(:,1),centro_masa_pie_izquierdo(:,2),centro_masa_
 hold on
 
 % Se plotean los vectores
-for i=1:50:length(centro_masa_muslo_derecho)
+for i=1:paso_vectores:length(centro_masa_muslo_derecho)
     %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
     % Se plotean los marcadores donde luego se van a plotear los vectores
     %Marcadores de la pelvis
@@ -1011,7 +1189,7 @@ legend({'CM muslo derecho',...
 figure
 plot3(p15(:,1),p15(:,2),p15(:,3),'LineWidth',line_width,'color',negro)
 hold on
-for i=1:50:length(centro_masa_muslo_derecho)
+for i=1:paso_vectores:length(centro_masa_muslo_derecho)
     % i,j,k de la pelvis
     quiver3(p15(i,1),p15(i,2),p15(i,3),iPelvis(i,1)*factor_vectores,iPelvis(i,2)*factor_vectores,iPelvis(i,3)*factor_vectores,'color',rojo,'LineWidth',line_width)
     hold on
@@ -1019,7 +1197,7 @@ for i=1:50:length(centro_masa_muslo_derecho)
     hold on
     quiver3(p15(i,1),p15(i,2),p15(i,3),kPelvis(i,1)*factor_vectores,kPelvis(i,2).*factor_vectores,kPelvis(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
 end
-title('Centro de masa de la cadera (p15)  y vectores $\vec{i}$,$\vec{j}$,$\vec{k}$','Interpreter','latex')
+title('Centro de masa de la pelvis (p15)  y vectores $\vec{i}$,$\vec{j}$,$\vec{k}$','Interpreter','latex')
 grid on
 xlabel('x [m]','Interpreter','latex');
 ylabel('y [m]','Interpreter','latex');
@@ -1037,7 +1215,7 @@ figure
 % Plot de la posicion del centro de masa del muslo
 plot3(centro_masa_muslo_derecho(:,1),centro_masa_muslo_derecho(:,2),centro_masa_muslo_derecho(:,3),'LineWidth',line_width,'color',negro)
 hold on
-for i=1:50:length(centro_masa_muslo_derecho)
+for i=1:paso_vectores:length(centro_masa_muslo_derecho)
     % i del muslo derecho
     quiver3(centro_masa_muslo_derecho(i,1),...
         centro_masa_muslo_derecho(i,2),...
@@ -1074,7 +1252,7 @@ figure
 % Plot de centro de masa
 plot3(centro_masa_muslo_izquierdo(:,1),centro_masa_muslo_izquierdo(:,2),centro_masa_muslo_izquierdo(:,3),'LineWidth',line_width,'color',negro)
 hold on
-for i=1:50:length(centro_masa_muslo_izquierdo)
+for i=1:paso_vectores:length(centro_masa_muslo_izquierdo)
     % i del muslo izquierdo
     quiver3(centro_masa_muslo_izquierdo(i,1),...
         centro_masa_muslo_izquierdo(i,2),...
@@ -1113,7 +1291,7 @@ plot3(centro_masa_pierna_derecha(:,1),...
     centro_masa_pierna_derecha(:,2),...
     centro_masa_pierna_derecha(:,3),'LineWidth',line_width,'color',negro)
 hold on
-for i=1:50:length(centro_masa_pierna_derecha)
+for i=1:paso_vectores:length(centro_masa_pierna_derecha)
     % i de la pierna derecha
     quiver3(centro_masa_pierna_derecha(i,1),...
         centro_masa_pierna_derecha(i,2),...
@@ -1152,7 +1330,7 @@ plot3(centro_masa_pierna_izquierda(:,1),...
     centro_masa_pierna_izquierda(:,2),...
     centro_masa_pierna_izquierda(:,3),'LineWidth',line_width,'color',negro)
 hold on
-for i=1:50:length(centro_masa_pierna_izquierda)
+for i=1:paso_vectores:length(centro_masa_pierna_izquierda)
     % i de la pierna izquierda
     quiver3(centro_masa_pierna_izquierda(i,1),...
         centro_masa_pierna_izquierda(i,2),...
@@ -1191,7 +1369,7 @@ plot3(centro_masa_pie_derecho(:,1),...
     centro_masa_pie_derecho(:,2),...
     centro_masa_pie_derecho(:,3),'LineWidth',line_width,'color',negro)
 hold on
-for i=1:50:length(centro_masa_pie_derecho)
+for i=1:paso_vectores:length(centro_masa_pie_derecho)
     % i del pie derecho
     quiver3(centro_masa_pie_derecho(i,1),...
         centro_masa_pie_derecho(i,2),...
@@ -1230,7 +1408,7 @@ plot3(centro_masa_pie_izquierdo(:,1),...
     centro_masa_pie_izquierdo(:,2),...
     centro_masa_pie_izquierdo(:,3),'LineWidth',line_width,'color',negro)
 hold on
-for i=1:50:length(centro_masa_pie_izquierdo)
+for i=1:paso_vectores:length(centro_masa_pie_izquierdo)
     % i del pie izquierdo
     quiver3(centro_masa_pie_izquierdo(i,1),...
         centro_masa_pie_izquierdo(i,2),...
