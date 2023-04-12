@@ -8,6 +8,7 @@ purpura                   = [1, 0.11, 0.612, 0.2];
 factor_vectores     = 1/30;
 paso_vectores       = 10;
 line_width               = 1.75;
+factor_a_grados    = 180/pi;
 
 % ===========================================================================================================================================================%
 %%  Se importan los datos de la marcha.
@@ -262,6 +263,7 @@ p_dedo_derecho = p3+0.742*A13*uPie_derecho + 1.074*A15*vPie_derecho - 0.187*A19*
 p_dedo_izquierdo = p10+0.742*A14*uPie_izquierdo + 1.074*A16*vPie_izquierdo + 0.187*A20*wPie_izquierdo;
 
 % ===========================================================================================================================================================%
+
 %%  Plot de u,v,w y las posiciones articulares.
 close all % cierra las ventanas
 clc % limpia la consola
@@ -482,7 +484,7 @@ clc % limpia la consola
         %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
     end
     grid on
-    title('Posiciones articulares (PA) y vectores $\vec{u}$,$\vec{v}$,$\vec{w}$','Interpreter','latex')
+    title('Posiciones articulares (PA) de las caderas y vectores $\vec{u}$,$\vec{v}$,$\vec{w}$','Interpreter','latex')
     xlabel('x [m]','Interpreter','latex');
     ylabel('y [m]','Interpreter','latex');
     zlabel('z [m]','Interpreter','latex');
@@ -540,7 +542,7 @@ clc % limpia la consola
         %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
     end
     grid on
-    title('Posicion articular (PA) rodillas y $\vec{u}$, $\vec{v}$ y $\vec{w}$','Interpreter','latex')
+    title('Posiciones articulares (PA) de las rodillas y $\vec{u}$, $\vec{v}$ y $\vec{w}$','Interpreter','latex')
     xlabel('x [m]','Interpreter','latex');
     ylabel('y [m]','Interpreter','latex');
     zlabel('z [m]','Interpreter','latex');
@@ -549,16 +551,16 @@ clc % limpia la consola
         '$\vec{u}$',...,
         '$\vec{v}$',...,
         '$\vec{w}$'},'Interpreter','latex') 
-%% %%  Plot u,v,w tobillos
+%%  Plot u,v,w tobillos
 close all % cierra las ventanas
 clc % limpia la consola
 
     figure
-    % Posicion de la rodilla derecha como linea
-    plot3(p_tobillo_derecho(:,1),p_rodilla_derecha(:,2),p_rodilla_derecha(:,3),'LineWidth',line_width);
+    % Posicion del tobillo derecho como linea
+    plot3(p_tobillo_derecho(:,1),p_tobillo_derecho(:,2),p_tobillo_derecho(:,3),'LineWidth',line_width);
     hold on
-    % Posicion de la rodilla izquierda como linea
-    plot3(p_tobillo_izquierdo(:,1),p_rodilla_izquierda(:,2),p_rodilla_izquierda(:,3),'LineWidth',line_width);
+    % Posicion del tobillo izquierdo como linea
+    plot3(p_tobillo_izquierdo(:,1),p_tobillo_izquierdo(:,2),p_tobillo_izquierdo(:,3),'LineWidth',line_width);
     hold on
     for i=1:paso_vectores:length(p_cadera_derecha)       
         %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
@@ -596,7 +598,7 @@ clc % limpia la consola
             wPie_izquierdo(i,1)*factor_vectores,wPie_izquierdo(i,2).*factor_vectores,wPie_izquierdo(i,3)*factor_vectores,'color',azul,'LineWidth',line_width)
            end
     grid on
-    title('Posicion articular (PA) tobillos y $\vec{u}$, $\vec{v}$ y $\vec{w}$','Interpreter','latex')
+    title('Posiciones articulares (PA) de los tobillos y $\vec{u}$, $\vec{v}$ y $\vec{w}$','Interpreter','latex')
     xlabel('x [m]','Interpreter','latex');
     ylabel('y [m]','Interpreter','latex');
     zlabel('z [m]','Interpreter','latex');
@@ -605,6 +607,7 @@ clc % limpia la consola
         '$\vec{u}$',...,
         '$\vec{v}$',...,
         '$\vec{w}$'},'Interpreter','latex')
+    
 %%  Calculos de los centros de masa.
 % Muslo derecho
 centro_masa_muslo_derecho = p_cadera_derecha + 0.39*(p_rodilla_derecha - p_cadera_derecha);
@@ -725,6 +728,7 @@ kPie_izquierdo    = numerador./denominador;
 % ------------   jPie_izquierdo  = kPie_izquierdo x iPie_izquierdo
 jPie_izquierdo    = cross(kPie_izquierdo, iPie_izquierdo);
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+
 %%  Plot de i,j,k, posiciones articulares y los centros de masa.
 
 close all % cierra las ventanas
@@ -1438,3 +1442,177 @@ legend({'Centro masa',...
     '$\vec{k}$'...
     },'Interpreter','latex')
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%-
+
+%% Renombre de los i,j,k para calculos de los angulos
+
+% Muslos
+i1  = iMuslo_derecho;
+j1  = jMuslo_derecho;
+k1 = kMuslo_derecho;
+
+i2  = iMuslo_izquierdo;
+j2  = jMuslo_izquierdo;
+k2 = kMuslo_izquierdo;
+
+% Piernas
+i3  = iPierna_derecha;
+j3  = jPierna_derecha;
+k3 = kPierna_derecha;
+
+i4  = iPierna_izquierda;
+j4  = jPierna_izquierda;
+k4 = kPierna_izquierda;
+
+% Pies
+i5  = iPie_derecho;
+j5  = jPie_derecho;
+k5 = kPie_derecho;
+
+i6  = iPie_izquierdo;
+j6  = jPie_izquierdo;
+k6 = kPie_izquierdo;
+%% Calculos angulos articulares
+clc
+%-----------------------------------------------  Cadera derecha 
+numerador = cross(kPelvis,i1);
+denominador = sqrt(sum(numerador.^2,2));
+I_cadera_derecha = numerador./denominador;
+
+% ?R.Hip = sin-1[lR.Hip * iPelvis] 
+% ? : flexion/extension
+alfa_cadera_derecha = asin(dot(I_cadera_derecha,iPelvis,2));
+
+% ?R.Hip = sin-1[kPelvis * i1] 
+% ? : abduccion/aduccion
+beta_cadera_derecha = asin(dot(kPelvis,i1,2));
+
+% ?R.Hip = -sin-1[lR.Hip * k1] 
+% ? : rotacion interna/externa
+gama_cadera_derecha = -asin(dot(I_cadera_derecha,k1,2));
+
+%-----------------------------------------------  Cadera izquierda 
+numerador = cross(kPelvis,i2);
+denominador = sqrt(sum(numerador.^2,2));
+I_cadera_izquierda = numerador./denominador;
+
+% ?L.Hip = sin-1[lL.Hip * iPelvis] 
+% ? : flexion/extension
+alfa_cadera_izquierda = asin(dot(I_cadera_izquierda,iPelvis,2));
+%alfa_cadera_izquierda=alfa_cadera_izquierda(LHS1-inicio:LHS2-inicio);
+% ?L.Hip = -sin-1[kPelvis * i2] 
+% ? : abduccion/aduccion
+beta_cadera_izquierda = -asin(dot(kPelvis,i2,2));
+% ?L.Hip = sin-1[lL.Hip * k2] 
+% ? : rotacion interna/externa
+gama_cadera_izquierda = asin(dot(I_cadera_izquierda,k2,2));
+
+
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+%-----------------------------------------------  Rodilla derecha 
+numerador = cross(k1,i3);
+denominador = sqrt(sum(numerador.^2,2));
+I_rodilla_derecha = numerador./denominador;
+
+% ?R.Knee = -sin-1[lR.Knee * i1] 
+% ? : flexion/extension
+alfa_rodilla_derecha = asin(dot(I_rodilla_derecha,i1,2));
+
+% ?R.Knee = sin-1[k1 * i3] 
+% ? : abduccion/aduccion
+beta_rodilla_derecha = asin(dot(k1,i3,2));
+
+% ?R.Knee = -sin-1[lR.Knee * k3] 
+% ? : rotacion interna/externa
+gama_rodilla_derecha = -asin(dot(I_rodilla_derecha,k3,2));
+
+%-----------------------------------------------  Rodilla izquierda 
+numerador = cross(k2,i4);
+denominador = sqrt(sum(numerador.^2,2));
+I_rodilla_izquierda = numerador./denominador;
+
+% ?L.Knee = -sin-1[lL.Knee * i2] 
+% ? : flexion/extension
+alfa_rodilla_izquierda = asin(dot(I_rodilla_izquierda,i2,2));
+
+% ?L.Knee = -sin-1[k2 * i4]  
+% ? : abduccion/aduccion
+beta_rodilla_izquierda = asin(dot(k2,i4,2));
+
+% ?L.Knee = sin-1[lL.Knee * k4] 
+% ? : rotacion interna/externa
+gama_rodilla_derecha = -asin(dot(I_rodilla_izquierda,k4,2));
+
+
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+%-----------------------------------------------  Tobillo derecho
+numerador = cross(k3,i5);
+denominador = sqrt(sum(numerador.^2,2));
+I_tobillo_derecho = numerador./denominador;
+
+% ?R.Ankle = sin-1[lR.Ankle * j3]  
+% ? : flexion/extension
+alfa_rodi_derecha = asin(dot(I_tobillo_derecho,i1,2));
+
+% ?R.Ankle = sin-1[k3 * i5] 
+% ? : abduccion/aduccion
+beta_rodilla_derecha = asin(dot(k1,i3,2));
+
+% ?R.Ankle = -sin-1[lR.Ankle * k5] 
+% ? : rotacion interna/externa
+gama_rodilla_derecha = -asin(dot(I_tobillo_derecho,k3,2));
+%% Recorte angulos articulares
+
+% En este caso la marcha comienza con el pie derecho
+
+%---------- CADERAS
+alfa_cadera_derecha      = alfa_cadera_derecha(1:RHS2-inicio);
+alfa_cadera_izquierda    = alfa_cadera_izquierda(LHS1-inicio:LHS2-inicio);
+
+beta_cadera_derecha     = beta_cadera_derecha(1:RHS2-inicio);
+beta_cadera_izquierda   = beta_cadera_izquierda(LHS1-inicio:LHS2-inicio);
+
+gama_cadera_derecha   = gama_cadera_derecha(1:RHS2-inicio);
+gama_cadera_izquierda = gama_cadera_izquierda(LHS1-inicio:LHS2-inicio);
+
+%---------- CADERAS
+
+
+
+%% Plot angulos - Caderas
+close all % cierra las ventanas
+clc % limpia la consola
+figure
+subplot(3,3,1);
+
+% Plot de alfa
+plot(InterpolaA100Muestras(alfa_cadera_derecha.*factor_a_grados),'LineWidth',line_width)
+hold on
+plot(InterpolaA100Muestras(alfa_cadera_izquierda.*factor_a_grados),'LineWidth',line_width)
+title('Cadera: flexion (+) $\|$ extesion (-) ','Interpreter','latex','FontSize',12)
+grid on
+xlabel('CM [$\%$]','Interpreter','latex');
+ylabel('$\alpha$ [ grados ]','Interpreter','latex','FontSize',13);
+legend({'Derecha', 'Izquierda'},'Interpreter','latex')
+% Plot de beta
+subplot(3,3,2);
+plot(InterpolaA100Muestras(beta_cadera_derecha.*factor_a_grados),'LineWidth',line_width)
+hold on
+plot(InterpolaA100Muestras(beta_cadera_izquierda.*factor_a_grados),'LineWidth',line_width)
+grid on
+title('Cadera: abduccion (+) $\|$ aduccion (-) ','Interpreter','latex','FontSize',12)
+xlabel('CM [$\%$]','Interpreter','latex');
+ylabel('$\beta$ [ grados ]','Interpreter','latex','FontSize',13);
+legend({'Derecha', 'Izquierda'},'Interpreter','latex')
+% Plot de gama
+subplot(3,3,3);
+plot(InterpolaA100Muestras(gama_cadera_derecha.*factor_a_grados),'LineWidth',line_width)
+hold on
+plot(InterpolaA100Muestras(gama_cadera_izquierda.*factor_a_grados),'LineWidth',line_width)
+grid on
+title('Cadera: rot. interna (+) $\|$ rot. externa (-) ','Interpreter','latex','FontSize',12)
+xlabel('CM [$\%$]','Interpreter','latex');
+ylabel('$\gamma$ [ grados ]','Interpreter','latex','FontSize',13);
+legend({'Derecha', 'Izquierda'},'Interpreter','latex')
+
+
+
