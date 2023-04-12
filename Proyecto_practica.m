@@ -1442,7 +1442,6 @@ legend({'Centro masa',...
     '$\vec{k}$'...
     },'Interpreter','latex')
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%-
-
 %% Renombre de los i,j,k para calculos de los angulos
 
 % Muslos
@@ -1478,16 +1477,16 @@ numerador = cross(kPelvis,i1);
 denominador = sqrt(sum(numerador.^2,2));
 I_cadera_derecha = numerador./denominador;
 
-% ?R.Hip = sin-1[lR.Hip * iPelvis] 
-% ? : flexion/extension
+% alfaR.Hip = sin-1[lR.Hip * iPelvis] 
+% alfa: flexion/extension
 alfa_cadera_derecha = asin(dot(I_cadera_derecha,iPelvis,2));
 
-% ?R.Hip = sin-1[kPelvis * i1] 
-% ? : abduccion/aduccion
+% betaR.Hip = sin-1[kPelvis * i1] 
+% beta: abduccion/aduccion
 beta_cadera_derecha = asin(dot(kPelvis,i1,2));
 
-% ?R.Hip = -sin-1[lR.Hip * k1] 
-% ? : rotacion interna/externa
+% gamaR.Hip = -sin-1[lR.Hip * k1] 
+% gama : rotacion interna/externa
 gama_cadera_derecha = -asin(dot(I_cadera_derecha,k1,2));
 
 %-----------------------------------------------  Cadera izquierda 
@@ -1495,15 +1494,15 @@ numerador = cross(kPelvis,i2);
 denominador = sqrt(sum(numerador.^2,2));
 I_cadera_izquierda = numerador./denominador;
 
-% ?L.Hip = sin-1[lL.Hip * iPelvis] 
-% ? : flexion/extension
+% alfaL.Hip = sin-1[lL.Hip * iPelvis] 
+% alfa: flexion/extension
 alfa_cadera_izquierda = asin(dot(I_cadera_izquierda,iPelvis,2));
 %alfa_cadera_izquierda=alfa_cadera_izquierda(LHS1-inicio:LHS2-inicio);
-% ?L.Hip = -sin-1[kPelvis * i2] 
-% ? : abduccion/aduccion
+% betaL.Hip = -sin-1[kPelvis * i2] 
+% beta: abduccion/aduccion
 beta_cadera_izquierda = -asin(dot(kPelvis,i2,2));
-% ?L.Hip = sin-1[lL.Hip * k2] 
-% ? : rotacion interna/externa
+% gamaL.Hip = sin-1[lL.Hip * k2] 
+% gama : rotacion interna/externa
 gama_cadera_izquierda = asin(dot(I_cadera_izquierda,k2,2));
 
 
@@ -1513,16 +1512,16 @@ numerador = cross(k1,i3);
 denominador = sqrt(sum(numerador.^2,2));
 I_rodilla_derecha = numerador./denominador;
 
-% ?R.Knee = -sin-1[lR.Knee * i1] 
-% ? : flexion/extension
+% alfaR.Knee = -sin-1[lR.Knee * i1] 
+% alfa: flexion/extension
 alfa_rodilla_derecha = -asin(dot(I_rodilla_derecha,i1,2));
 
-% ?R.Knee = sin-1[k1 * i3] 
-% ? : abduccion/aduccion
+% betaR.Knee = sin-1[k1 * i3] 
+% beta: abduccion/aduccion
 beta_rodilla_derecha = asin(dot(k1,i3,2));
 
-% ?R.Knee = -sin-1[lR.Knee * k3] 
-% ? : rotacion interna/externa
+% gamaR.Knee = -sin-1[lR.Knee * k3] 
+% gama: rotacion interna/externa
 gama_rodilla_derecha = -asin(dot(I_rodilla_derecha,k3,2));
 
 %-----------------------------------------------  Rodilla izquierda 
@@ -1530,16 +1529,16 @@ numerador = cross(k2,i4);
 denominador = sqrt(sum(numerador.^2,2));
 I_rodilla_izquierda = numerador./denominador;
 
-% ?L.Knee = -sin-1[lL.Knee * i2] 
-% ? : flexion/extension
+% alfaL.Knee = -sin-1[lL.Knee * i2] 
+% alfa: flexion/extension
 alfa_rodilla_izquierda = -asin(dot(I_rodilla_izquierda,i2,2));
 
-% ?L.Knee = -sin-1[k2 * i4]  
-% ? : abduccion/aduccion
+% betaL.Knee = -sin-1[k2 * i4]  
+% beta: abduccion/aduccion
 beta_rodilla_izquierda = -asin(dot(k2,i4,2));
 
-% ?L.Knee = sin-1[lL.Knee * k4] 
-% ? : rotacion interna/externa
+% gamaL.Knee = sin-1[lL.Knee * k4] 
+% gama : rotacion interna/externa
 gama_rodilla_izquierda  = asin(dot(I_rodilla_izquierda,k4,2));
 
 
@@ -1549,34 +1548,34 @@ numerador = cross(k3,i5);
 denominador = sqrt(sum(numerador.^2,2));
 I_tobillo_derecho = numerador./denominador;
 
-% ?R.Ankle = sin-1[lR.Ankle * j3]  
-% ? : flexion/extension
-alfa_tobillo_derecho = asin(dot(I_tobillo_derecho,j3,2));
+% alfaR.Ankle = -sin-1[lR.Ankle * j3]  
+% alfa: flexion/extension
+alfa_tobillo_derecho = -asin(dot(I_tobillo_derecho,j3,2));
 
-% ?R.Ankle = sin-1[k3 * i5] 
-% ? : abduccion/aduccion
+% betaR.Ankle = sin-1[k3 * i5] 
+% beta: abduccion/aduccion
 beta_tobillo_derecho = asin(dot(k3,i5,2));
 
-% ?R.Ankle = -sin-1[lR.Ankle * k5] 
-% ? : rotacion interna/externa
-gama_tobillo_derecho = -asin(dot(I_tobillo_derecho,k5,2));
+% gamaR.Ankle = sin-1[lR.Ankle * k5] 
+% gama: rotacion interna/externa
+gama_tobillo_derecho = asin(dot(I_tobillo_derecho,k5,2));
 
 %-----------------------------------------------  Tobillo izquierdo
 numerador = cross(k4,i6);
 denominador = sqrt(sum(numerador.^2,2));
 I_tobillo_izquierdo = numerador./denominador;
 
-% ?L.Ankle = sin-1[lL.Ankle * j4] 
-% ? : flexion/extension
-alfa_tobillo_izquierdo= asin(dot(I_tobillo_izquierdo,j4,2));
+% alfaL.Ankle = -sin-1[lL.Ankle * j4] 
+% alfa: flexion/extension
+alfa_tobillo_izquierdo= -asin(dot(I_tobillo_izquierdo,j4,2));
 
-% ?L.Ankle = -sin-1[k4 * i6] 
-% ? : abduccion/aduccion
+% betaL.Ankle = -sin-1[k4 * i6] 
+% beta: abduccion/aduccion
 beta_tobillo_izquierdo= -asin(dot(k4,i6,2));
 
-% ?L.Ankle = sin-1[lL.Ankle * k6] 
-% ? : rotacion interna/externa
-gama_tobillo_izquierdo= asin(dot(I_tobillo_izquierdo,k6,2));
+% gamaL.Ankle = -sin-1[lL.Ankle * k6] 
+% gama: rotacion interna/externa
+gama_tobillo_izquierdo= -asin(dot(I_tobillo_izquierdo,k6,2));
 
 
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
@@ -1614,9 +1613,6 @@ beta_tobillo_izquierdo     = beta_tobillo_izquierdo(LHS1-inicio:LHS2-inicio);
 
 gama_tobillo_derecho    = gama_tobillo_derecho(1:RHS2-inicio);
 gama_tobillo_izquierdo   = gama_tobillo_izquierdo(LHS1-inicio:LHS2-inicio);
-
-
-
 %% Plot angulos - Caderas
 close all % cierra las ventanas
 clc % limpia la consola
@@ -1627,6 +1623,8 @@ subplot(3,3,1);
 plot(InterpolaA100Muestras(alfa_cadera_derecha.*factor_a_grados),'LineWidth',line_width)
 hold on
 plot(InterpolaA100Muestras(alfa_cadera_izquierda.*factor_a_grados),'LineWidth',line_width)
+hold on 
+plot([60 60 ], [-20 40],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 title('Cadera: flexion (+) $\|$ extesion (-) ','Interpreter','latex','FontSize',12)
 grid on
 xlabel('CM [$\%$]','Interpreter','latex');
@@ -1637,6 +1635,10 @@ subplot(3,3,2);
 plot(InterpolaA100Muestras(beta_cadera_derecha.*factor_a_grados),'LineWidth',line_width)
 hold on
 plot(InterpolaA100Muestras(beta_cadera_izquierda.*factor_a_grados),'LineWidth',line_width)
+hold on 
+plot([60 60], [-10 10],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
+hold on 
+plot([60 60 ], [-20 20],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 grid on
 title('Cadera: abduccion (+) $\|$ aduccion (-) ','Interpreter','latex','FontSize',12)
 xlabel('CM [$\%$]','Interpreter','latex');
@@ -1647,6 +1649,8 @@ subplot(3,3,3);
 plot(InterpolaA100Muestras(gama_cadera_derecha.*factor_a_grados),'LineWidth',line_width)
 hold on
 plot(InterpolaA100Muestras(gama_cadera_izquierda.*factor_a_grados),'LineWidth',line_width)
+hold on 
+plot([60 60 ], [-30 20],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 grid on
 title('Cadera: rot. interna (+) $\|$ rot. externa (-) ','Interpreter','latex','FontSize',12)
 xlabel('CM [$\%$]','Interpreter','latex');
@@ -1658,6 +1662,8 @@ subplot(3,3,4);
 plot(InterpolaA100Muestras(alfa_rodilla_derecha.*factor_a_grados),'LineWidth',line_width)
 hold on
 plot(InterpolaA100Muestras(alfa_rodilla_izquierda.*factor_a_grados),'LineWidth',line_width)
+hold on 
+plot([60 60 ], [0 60],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 title('Rodilla: flexion (+) $\|$ extesion (-) ','Interpreter','latex','FontSize',12)
 grid on
 xlabel('CM [$\%$]','Interpreter','latex');
@@ -1668,6 +1674,8 @@ subplot(3,3,5);
 plot(InterpolaA100Muestras(beta_rodilla_derecha.*factor_a_grados),'LineWidth',line_width)
 hold on
 plot(InterpolaA100Muestras(beta_rodilla_izquierda.*factor_a_grados),'LineWidth',line_width)
+hold on 
+plot([60 60 ], [-20 5],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 grid on
 title('Rodilla: abduccion (+) $\|$ aduccion (-) ','Interpreter','latex','FontSize',12)
 xlabel('CM [$\%$]','Interpreter','latex');
@@ -1678,6 +1686,8 @@ subplot(3,3,6);
 plot(InterpolaA100Muestras(gama_rodilla_derecha.*factor_a_grados),'LineWidth',line_width)
 hold on
 plot(InterpolaA100Muestras(gama_rodilla_izquierda.*factor_a_grados),'LineWidth',line_width)
+hold on 
+plot([60 60 ], [-30 20],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 grid on
 title('Rodilla: rot. interna (+) $\|$ rot. externa (-) ','Interpreter','latex','FontSize',12)
 xlabel('CM [$\%$]','Interpreter','latex');
@@ -1690,32 +1700,34 @@ subplot(3,3,7);
 plot(InterpolaA100Muestras(alfa_tobillo_derecho.*factor_a_grados),'LineWidth',line_width)
 hold on
 plot(InterpolaA100Muestras(alfa_tobillo_izquierdo.*factor_a_grados),'LineWidth',line_width)
+hold on 
+plot([60 60 ], [-30 20],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 title('Tobillo: flexion (+) $\|$ extesion (-) ','Interpreter','latex','FontSize',12)
 grid on
 xlabel('CM [$\%$]','Interpreter','latex');
 ylabel('$\alpha$ [ grados ]','Interpreter','latex','FontSize',13);
 legend({'Derecha', 'Izquierda'},'Interpreter','latex','Location','best')
 % Plot de beta
-subplot(3,3,8);
+subplot(3,3,9);
 plot(InterpolaA100Muestras(beta_tobillo_derecho.*factor_a_grados),'LineWidth',line_width)
 hold on
 plot(InterpolaA100Muestras(beta_tobillo_izquierdo.*factor_a_grados),'LineWidth',line_width)
+hold on 
+plot([60 60 ], [-30 20],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 grid on
 title('Tobillo: abduccion (+) $\|$ aduccion (-) ','Interpreter','latex','FontSize',12)
 xlabel('CM [$\%$]','Interpreter','latex');
 ylabel('$\beta$ [ grados ]','Interpreter','latex','FontSize',13);
 legend({'Derecha', 'Izquierda'},'Interpreter','latex','Location','best')
 % Plot de gama
-subplot(3,3,9);
+subplot(3,3,8);
 plot(InterpolaA100Muestras(gama_tobillo_derecho.*factor_a_grados),'LineWidth',line_width)
 hold on
 plot(InterpolaA100Muestras(gama_tobillo_izquierdo.*factor_a_grados),'LineWidth',line_width)
+hold on 
+plot([60 60 ], [15 40],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 grid on
 title('Tobillo: inversion (+) $\|$ eversion (-) ','Interpreter','latex','FontSize',12)
 xlabel('CM [$\%$]','Interpreter','latex');
 ylabel('$\gamma$ [ grados ]','Interpreter','latex','FontSize',13);
 legend({'Derecha', 'Izquierda'},'Interpreter','latex','Location','best')
-
-
-
-
