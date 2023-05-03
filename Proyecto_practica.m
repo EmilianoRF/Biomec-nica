@@ -1,3 +1,5 @@
+%% Limpiar variables
+clear all;
 
 %%  Variables extras.
 rojo                          = [1 0 0];
@@ -10,6 +12,7 @@ paso_vectores       = 10;
 line_width               = 1.75;
 factor_a_grados    = 180/pi;
 
+Biomecanica         = FuncionesBiomecanica;
 % ===========================================================================================================================================================%
 %%  Se importan los datos de la marcha.
 ruta_archivo = '0029_Davis_Marcha01_Walking10b2021.c3d';
@@ -1442,6 +1445,7 @@ legend({'Centro masa',...
     '$\vec{k}$'...
     },'Interpreter','latex')
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%-
+
 %% Renombre de los i,j,k para calculos de los angulos
 
 % Muslos
@@ -1613,7 +1617,8 @@ beta_tobillo_izquierdo     = beta_tobillo_izquierdo(LHS1-inicio:LHS2-inicio);
 
 gama_tobillo_derecho    = gama_tobillo_derecho(1:RHS2-inicio);
 gama_tobillo_izquierdo   = gama_tobillo_izquierdo(LHS1-inicio:LHS2-inicio);
-%% Plot angulos - Caderas
+
+%% Plot angulos articulares
 close all % cierra las ventanas
 clc % limpia la consola
 figure
@@ -1627,6 +1632,7 @@ hold on
 plot([60 60 ], [-20 40],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 title('Cadera: flexion (+) $\|$ extesion (-) ','Interpreter','latex','FontSize',12)
 grid on
+xticks(0:10:100);
 xlabel('CM [$\%$]','Interpreter','latex');
 ylabel('$\alpha$ [ grados ]','Interpreter','latex','FontSize',13);
 legend({'Derecha', 'Izquierda'},'Interpreter','latex','Location','best')
@@ -1640,6 +1646,7 @@ plot([60 60], [-10 10],'LineWidth',line_width*0.5,'LineStyle','--','color',negro
 hold on 
 plot([60 60 ], [-20 20],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 grid on
+xticks(0:10:100);
 title('Cadera: abduccion (+) $\|$ aduccion (-) ','Interpreter','latex','FontSize',12)
 xlabel('CM [$\%$]','Interpreter','latex');
 ylabel('$\beta$ [ grados ]','Interpreter','latex','FontSize',13);
@@ -1652,6 +1659,7 @@ plot(InterpolaA100Muestras(gama_cadera_izquierda.*factor_a_grados),'LineWidth',l
 hold on 
 plot([60 60 ], [-30 20],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 grid on
+xticks(0:10:100);
 title('Cadera: rot. interna (+) $\|$ rot. externa (-) ','Interpreter','latex','FontSize',12)
 xlabel('CM [$\%$]','Interpreter','latex');
 ylabel('$\gamma$ [ grados ]','Interpreter','latex','FontSize',13);
@@ -1666,6 +1674,7 @@ hold on
 plot([60 60 ], [0 60],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 title('Rodilla: flexion (+) $\|$ extesion (-) ','Interpreter','latex','FontSize',12)
 grid on
+xticks(0:10:100);
 xlabel('CM [$\%$]','Interpreter','latex');
 ylabel('$\alpha$ [ grados ]','Interpreter','latex','FontSize',13);
 legend({'Derecha', 'Izquierda'},'Interpreter','latex','Location','best')
@@ -1677,6 +1686,7 @@ plot(InterpolaA100Muestras(beta_rodilla_izquierda.*factor_a_grados),'LineWidth',
 hold on 
 plot([60 60 ], [-20 5],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 grid on
+xticks(0:10:100);
 title('Rodilla: abduccion (+) $\|$ aduccion (-) ','Interpreter','latex','FontSize',12)
 xlabel('CM [$\%$]','Interpreter','latex');
 ylabel('$\beta$ [ grados ]','Interpreter','latex','FontSize',13);
@@ -1689,6 +1699,7 @@ plot(InterpolaA100Muestras(gama_rodilla_izquierda.*factor_a_grados),'LineWidth',
 hold on 
 plot([60 60 ], [-30 20],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 grid on
+xticks(0:10:100);
 title('Rodilla: rot. interna (+) $\|$ rot. externa (-) ','Interpreter','latex','FontSize',12)
 xlabel('CM [$\%$]','Interpreter','latex');
 ylabel('$\gamma$ [ grados ]','Interpreter','latex','FontSize',13);
@@ -1704,6 +1715,7 @@ hold on
 plot([60 60 ], [-30 20],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 title('Tobillo: flexion (+) $\|$ extesion (-) ','Interpreter','latex','FontSize',12)
 grid on
+xticks(0:10:100);
 xlabel('CM [$\%$]','Interpreter','latex');
 ylabel('$\alpha$ [ grados ]','Interpreter','latex','FontSize',13);
 legend({'Derecha', 'Izquierda'},'Interpreter','latex','Location','best')
@@ -1715,6 +1727,7 @@ plot(InterpolaA100Muestras(beta_tobillo_izquierdo.*factor_a_grados),'LineWidth',
 hold on 
 plot([60 60 ], [-30 20],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 grid on
+xticks(0:10:100);
 title('Tobillo: abduccion (+) $\|$ aduccion (-) ','Interpreter','latex','FontSize',12)
 xlabel('CM [$\%$]','Interpreter','latex');
 ylabel('$\beta$ [ grados ]','Interpreter','latex','FontSize',13);
@@ -1727,7 +1740,74 @@ plot(InterpolaA100Muestras(gama_tobillo_izquierdo.*factor_a_grados),'LineWidth',
 hold on 
 plot([60 60 ], [15 40],'LineWidth',line_width*0.5,'LineStyle','--','color',negro,'HandleVisibility','off');
 grid on
+xticks(0:10:100);
 title('Tobillo: inversion (+) $\|$ eversion (-) ','Interpreter','latex','FontSize',12)
 xlabel('CM [$\%$]','Interpreter','latex');
 ylabel('$\gamma$ [ grados ]','Interpreter','latex','FontSize',13);
 legend({'Derecha', 'Izquierda'},'Interpreter','latex','Location','best')
+
+%% Calculos de los angulos de Euler
+
+plotear_angulos_euler = true;
+   % Muslo derecho
+ [  alfa_s_md, alfa_c_md,...
+     beta_s_md, beta_c_md,...
+     gamma_s_md, gamma_c_md] = Biomecanica.AngulosEuler(i1,j1,k1,plotear_angulos_euler);
+ 
+    % Muslo izquierdo
+ [  alfa_s_mi, alfa_c_mi,...
+     beta_s_mi, beta_c_mi,...
+     gamma_s_mi, gamma_c_mi] = Biomecanica.AngulosEuler(i2,j2,k2,plotear_angulos_euler);
+ 
+    % Pierna derecha
+ [  alfa_s_pd, alfa_c_pd,...
+     beta_s_pd, beta_c_pd,...
+     gamma_s_pd, gamma_c_pd] = Biomecanica.AngulosEuler(i3,j3,k3,plotear_angulos_euler);
+ 
+    % Pierna izquierda
+ [  alfa_s_pi, alfa_c_pi,...
+     beta_s_pi, beta_c_pi,...
+     gamma_s_pi, gamma_c_pi] = Biomecanica.AngulosEuler(i4,j4,k4,plotear_angulos_euler);
+  
+    % Pie derecho
+ [  alfa_s_pid, alfa_c_pid,...
+     beta_s_pid, beta_c_pid,...
+     gamma_s_pid, gamma_c_pid] = Biomecanica.AngulosEuler(i5,j5,k5,plotear_angulos_euler);
+ 
+     % Pie izquierda
+ [  alfa_s_pii, alfa_c_pii,...
+     beta_s_pii, beta_c_pii,...
+     gamma_s_pii, gamma_c_pii] = Biomecanica.AngulosEuler(i6,j6,k6,plotear_angulos_euler);
+ %% Calculos de las velocidades angulares
+    % Muslo derecho
+ [  derivada_alfa_md,...
+     derivada_beta_md,...
+     derivada_gamma_md] = Biomecanica.Derivadas(alfa_s_md,alfa_c_md,alfa_s_md,fm);
+ 
+ % Muslo izquierdo
+  [  derivada_alfa_mi,...
+     derivada_beta_mi,...
+     derivada_gamma_mi] = Biomecanica.Derivadas(alfa_s_mi,alfa_c_mi,alfa_s_mi,fm);
+ 
+  % Pierna derecho
+  [  derivada_alfa_pd,...
+     derivada_beta_pd,...
+     derivada_gamma_pd] = Biomecanica.Derivadas(alfa_s_pd,alfa_c_pd,alfa_s_pd,fm);
+  
+  % Pierna izquierda
+  [  derivada_alfa_pi,...
+     derivada_beta_pi,...
+     derivada_gamma_pi] = Biomecanica.Derivadas(alfa_s_pi,alfa_c_pi,alfa_c_pi,fm);
+  
+  % Pie derecho
+  [  derivada_alfa_pid,...
+     derivada_beta_pid,...
+     derivada_gamma_pid] = Biomecanica.Derivadas(alfa_s_pid,alfa_c_pid,alfa_s_pid,fm);
+ 
+   % Pie izquierdo
+  [  derivada_alfa_pii,...
+     derivada_beta_pii,...
+     derivada_gamma_pii] = Biomecanica.Derivadas(alfa_s_pii,alfa_c_pii,alfa_s_pii,fm);
+ 
+ 
+    
