@@ -1,7 +1,6 @@
 classdef FuncionesBiomecanica
    methods (Static)
       function [alfa_s, alfa_c, beta_s, beta_c, gamma_s, gamma_c] = AngulosEuler(i,j,k,graficar)
-       
          % Se definen I, J, K
          I           = zeros(size(i));
          I(:,1)    = 1;  
@@ -16,26 +15,26 @@ classdef FuncionesBiomecanica
          nodo                  = numerador./denominador;
         %--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
          % Calculo de los angulos con seno
-         alfa_s         = asin(dot(cross(I,nodo),K,2));
-         beta_s        = asin(dot(cross(K,k),nodo,2));
-         gamma_s  = asin(dot(cross(nodo,i),k,2));
+         alfa_s         = asind(dot(cross(I,nodo),K,2));
+         beta_s        = asind(dot(cross(K,k),nodo,2));
+         gamma_s  = asind(dot(cross(nodo,i),k,2));
         %--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%         
          % Calculo de los angulos con coseno
          numerador      = dot(J,nodo,2);
          denominador  = sqrt(sum(numerador.^2,2));
          factor                = numerador./denominador;
-         alfa_c                = -dot(factor,acos(dot(I,nodo,2)),2);
+         alfa_c                = -dot(factor,acosd(dot(I,nodo,2)),2);
         %--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%         
-         beta_c              = acos(dot(K,k,2));
+         beta_c              = acosd(dot(K,k,2));
         %--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%        
          numerador      = dot(j,nodo,2);
          denominador  = sqrt(sum(numerador.^2,2));
          factor                = numerador./denominador;
-         gamma_c        = -dot(factor,acos(dot(i,nodo,2)),2);
+         gamma_c        = -dot(factor,acosd(dot(i,nodo,2)),2);
          
          if graficar
              line_width = 1.75;
-             factor_a_grados    = 180/pi;
+             factor_a_grados    = 1;
              figure
              subplot(2,3,1)
              plot(factor_a_grados*alfa_c,'LineWidth',line_width,'color','b')
@@ -81,16 +80,15 @@ classdef FuncionesBiomecanica
          end
       end
       function [deruno,derdos,dertres] = Derivadas(uno,dos,tres,fm)
-
-% function [deruno,derdos,dertres] = derivadas(uno,dos,tres,fm)
-% Esta función devuelve las derivadas de las señales uno, dos y tres, las
-% cuales fueron muestreadas con una frecuencia de muestreo fm. Uno, dos y
-% tres serán vectores de una columna y n filas. Las señales derivadas
-% deruno, derdos y dertres también serán vectores de nx1.
-% El primer y el segundo valor del vector derivada serán iguales.
-% Entradas:
-% uno, dos y tres = cada uno es un vector [n x1] que se quiera derivar.
-% fm = es la frecuencia de muestreo utilizada.
+    % function [deruno,derdos,dertres] = derivadas(uno,dos,tres,fm)
+    % Esta función devuelve las derivadas de las señales uno, dos y tres, las
+    % cuales fueron muestreadas con una frecuencia de muestreo fm. Uno, dos y
+    % tres serán vectores de una columna y n filas. Las señales derivadas
+    % deruno, derdos y dertres también serán vectores de nx1.
+    % El primer y el segundo valor del vector derivada serán iguales.
+    % Entradas:
+    % uno, dos y tres = cada uno es un vector [n x1] que se quiera derivar.
+    % fm = es la frecuencia de muestreo utilizada.
 
 % Salidas
 % deruno = vector de tamaño [n x 1], y que representa la derivada del
@@ -121,6 +119,59 @@ end;
 deruno(1)= deruno(2);
 derdos (1) = derdos (2);
 dertres (1) = dertres (2);
-   end
+      end
+      function [wx,wy,wz] = VelocidadAngularSegmento (alfa, deralfa, beta, derbeta, gama,dergama)
+% function [wx,wy,wz] = velocidadangularsegmento (alfa, deralfa, beta, derbeta, gama,dergama);
+% Esta función calcula las velocidades angulares de los segmentos en
+% coordenadas locales, a partir de los ángulos de Euler alfa, beta, gama y
+% sus derivadas expresadas en coordenadas locales.
+
+% Entradas:
+% Todas las entradas son vectores de tamaño n x 1, donde n es el número de
+% muestras correspondientes a dos ciclos completos de la marcha.
+% alfa= angulo alfa del segmento de interés
+% deralfa = derivada del ángulo alfa del segmento de interés
+% beta= angulo beta del segmento de interés
+% derbeta = derivada del ángulo beta del segmento de interés
+% gama= angulo gamma del segmento de interés
+% dergama = derivada del ángulo gamma del segmento de interés
+
+% Salidas de la función
+% Todas las salidas son vectores de tamaño nx1, donde n es el número de
+% muestras correspondientes a dos ciclos completos de la marcha.
+
+% wx = velocidad angular del segmento de interés en la dirección x (es
+% decir en la dirección i local), wx está expresado en coordenadas locales
+
+% wy = velocidad angular del segmento de interés en la dirección y (es
+% decir en la dirección j local), wy está expresado en coordenadas locales
+
+% wz = velocidad angular del segmento de interés en la dirección z (es
+% decir en la dirección k local), wx está expresado en coordenadas locales
+
+% Ejemplo de cómo llamar a la función para el segmento MUSLO DERECHO:
+% [wxmusder,wymusder,wzmusder] = velocidadangularsegmento (alfamusder, deralfamusder, betamusder, derbetamusder, gamamusder,dergamamusder)
+
+wx= deralfa.*sind(beta).*sind(gama) + derbeta.*cosd(gama);
+wy = deralfa.* sind(beta).*cosd(gama) - derbeta.*sind(gama);
+wz = deralfa.*cosd(beta) + dergama;
+
+      end
+     function [senialnormalizada] = InterpolaA100Muestras(senial)
+% function [senialnormalizada] = InterpolaA100Muestras(senial);
+% Esta función recibe una señal en la variable "senial"
+% y la interpola a 100 muestras en la variable senialporciento;
+% La señal que ingresa es un vector nx1
+% Y la senialnormalizada es un vector que contiene 1x100 datos
+% y que nosotros entendemos como normalizada al ciclo de la marcha.
+% Ejemplo de uso:
+% [angulocaderanorm] = InterpolaA100Muestras(angulocadera);
+
+ muestras = 1:1:length(senial);
+ 
+ Porcentaje = 1:length(senial)/100:length(senial);
+ 
+senialnormalizada  = interp1(muestras,senial,Porcentaje,'spline');
+ end
    end
 end

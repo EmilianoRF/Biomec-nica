@@ -11,6 +11,8 @@ factor_vectores     = 1/30;
 paso_vectores       = 10;
 line_width               = 1.75;
 factor_a_grados    = 180/pi;
+color_derecho       = rojo;
+color_izquierdo     = verde;
 
 Biomecanica         = FuncionesBiomecanica;
 % ===========================================================================================================================================================%
@@ -1747,7 +1749,7 @@ ylabel('$\gamma$ [ grados ]','Interpreter','latex','FontSize',13);
 legend({'Derecha', 'Izquierda'},'Interpreter','latex','Location','best')
 
 %% Calculos de los angulos de Euler
-
+close all
 plotear_angulos_euler = true;
    % Muslo derecho
  [  alfa_s_md, alfa_c_md,...
@@ -1778,36 +1780,234 @@ plotear_angulos_euler = true;
  [  alfa_s_pii, alfa_c_pii,...
      beta_s_pii, beta_c_pii,...
      gamma_s_pii, gamma_c_pii] = Biomecanica.AngulosEuler(i6,j6,k6,plotear_angulos_euler);
- %% Calculos de las velocidades angulares
-    % Muslo derecho
+    %% Calculos de las velocidades angulares
+
+ %MUSLO DERECHO
+    % Se calculan  las derivadas
  [  derivada_alfa_md,...
      derivada_beta_md,...
-     derivada_gamma_md] = Biomecanica.Derivadas(alfa_s_md,alfa_c_md,alfa_s_md,fm);
- 
- % Muslo izquierdo
+     derivada_gamma_md] = Biomecanica.Derivadas(alfa_s_md,beta_c_md,gamma_c_md,fm);
+ % Se calculan las velocidades angulares
+ [  omega_md_x,...
+     omega_md_y,...
+     omega_md_z] = Biomecanica.VelocidadAngularSegmento(alfa_s_md,derivada_alfa_md,...
+                                                                                                                   beta_c_md,derivada_beta_md,...
+                                                                                                                   gamma_c_md,derivada_gamma_md);
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
+ % MUSLO IZQUIERDO
+ % Se calculan las derivadas
   [  derivada_alfa_mi,...
      derivada_beta_mi,...
-     derivada_gamma_mi] = Biomecanica.Derivadas(alfa_s_mi,alfa_c_mi,alfa_s_mi,fm);
+     derivada_gamma_mi] = Biomecanica.Derivadas(alfa_s_mi,beta_c_mi,gamma_c_mi,fm);
  
-  % Pierna derecho
+  % Se calculan las velocidades angulares
+ [  omega_mi_x,...
+     omega_mi_y,...
+     omega_mi_z] = Biomecanica.VelocidadAngularSegmento(alfa_s_mi,derivada_alfa_mi,...
+                                                                                                                   beta_c_mi,derivada_beta_mi,...
+                                                                                                                   gamma_c_mi,derivada_gamma_mi);
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%-                                                                                                               
+  % PIERNA DERECHA
+  % Se calculan las derivadas
   [  derivada_alfa_pd,...
      derivada_beta_pd,...
-     derivada_gamma_pd] = Biomecanica.Derivadas(alfa_s_pd,alfa_c_pd,alfa_s_pd,fm);
+     derivada_gamma_pd] = Biomecanica.Derivadas(alfa_s_pd,beta_c_pd,gamma_c_pd,fm);
+ 
+  % Se calculan las velocidades angulares
+ [  omega_pd_x,...
+     omega_pd_y,...
+     omega_pd_z] = Biomecanica.VelocidadAngularSegmento(alfa_s_pd,derivada_alfa_pd,...
+                                                                                                                   beta_c_pd,derivada_beta_pd,...
+                                                                                                                   gamma_c_pd,derivada_gamma_pd);
   
-  % Pierna izquierda
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%-                                                                                                               
+  % PIERNA IZQUIERDA
+  % Se calculan las derivadas
   [  derivada_alfa_pi,...
      derivada_beta_pi,...
-     derivada_gamma_pi] = Biomecanica.Derivadas(alfa_s_pi,alfa_c_pi,alfa_c_pi,fm);
+     derivada_gamma_pi] = Biomecanica.Derivadas(alfa_s_pi,beta_c_pi,gamma_c_pi,fm);
+  % Se calculan las velocidades angulares
+ [  omega_pi_x,...
+     omega_pi_y,...
+     omega_pi_z] = Biomecanica.VelocidadAngularSegmento(alfa_s_pi,derivada_alfa_pi,...
+                                                                                                                   beta_c_pi,derivada_beta_pi,...
+                                                                                                                   gamma_c_pi,derivada_gamma_pi);
   
+ %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%-                                                                                                               
+  % PIE DERECHO
+  % Se calculan las derivadas
   % Pie derecho
   [  derivada_alfa_pid,...
      derivada_beta_pid,...
-     derivada_gamma_pid] = Biomecanica.Derivadas(alfa_s_pid,alfa_c_pid,alfa_s_pid,fm);
- 
-   % Pie izquierdo
+     derivada_gamma_pid] = Biomecanica.Derivadas(alfa_s_pid,beta_c_pid,gamma_c_pid,fm);
+  % Se calculan las velocidades angulares
+ [  omega_pid_x,...
+     omega_pid_y,...
+     omega_pid_z] = Biomecanica.VelocidadAngularSegmento(alfa_s_pid,derivada_alfa_pid,...
+                                                                                                                   beta_c_pid,derivada_beta_pid,...
+                                                                                                                   gamma_c_pid,derivada_gamma_pid);
+ %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%-                                                                                                               
+  % PIE IZQUIERDO
+  % Se calculan las derivadas
   [  derivada_alfa_pii,...
      derivada_beta_pii,...
-     derivada_gamma_pii] = Biomecanica.Derivadas(alfa_s_pii,alfa_c_pii,alfa_s_pii,fm);
- 
- 
-    
+     derivada_gamma_pii] = Biomecanica.Derivadas(alfa_s_pii,beta_c_pii,gamma_c_pii,fm);
+  % Se calculan las velocidades angulares
+ [  omega_pii_x,...
+     omega_pii_y,...
+     omega_pii_z] = Biomecanica.VelocidadAngularSegmento(alfa_s_pii,derivada_alfa_pii,...
+                                                                                                                   beta_c_pii,derivada_beta_pii,...
+                                                                                                                   gamma_c_pii,derivada_gamma_pii);
+ %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%-
+%% Plot de las velocidades angulares
+
+% MUSLO DERECHO
+omega_md = [omega_md_x omega_md_y omega_md_z];
+omega_md_r = omega_md(1:RHS2-inicio,:);
+
+omega_md_rx = Biomecanica.InterpolaA100Muestras(omega_md_r(:,1));
+omega_md_ry = Biomecanica.InterpolaA100Muestras(omega_md_r(:,2));
+omega_md_rz = Biomecanica.InterpolaA100Muestras(omega_md_r(:,3));
+
+% MUSLO IZQUIERDO
+omega_mi = [omega_mi_x omega_mi_y omega_mi_z];
+omega_mi_r = omega_mi(LHS1-inicio:LHS2-inicio,:);
+
+omega_mi_rx = Biomecanica.InterpolaA100Muestras(omega_mi_r(:,1))';
+omega_mi_ry = Biomecanica.InterpolaA100Muestras(omega_mi_r(:,2))';
+omega_mi_rz = Biomecanica.InterpolaA100Muestras(omega_mi_r(:,3))';
+
+% PIERNA DERECHA
+omega_pd = [omega_pd_x omega_pd_y omega_pd_z];
+omega_pd_r = omega_pd(1:RHS2-inicio,:);
+
+omega_pd_rx = Biomecanica.InterpolaA100Muestras(omega_pd_r(:,1));
+omega_pd_ry = Biomecanica.InterpolaA100Muestras(omega_pd_r(:,2));
+omega_pd_rz = Biomecanica.InterpolaA100Muestras(omega_pd_r(:,3));
+
+% PIERNA IZQUIERDA
+omega_pi     = [omega_pi_x omega_pi_y omega_pi_z];
+omega_pi_r  = omega_pi(LHS1-inicio:LHS2-inicio,:);
+
+omega_pi_rx = Biomecanica.InterpolaA100Muestras(omega_pi_r(:,1))';
+omega_pi_ry = Biomecanica.InterpolaA100Muestras(omega_pi_r(:,2))';
+omega_pi_rz = Biomecanica.InterpolaA100Muestras(omega_pi_r(:,3))';
+
+% PIE DERECHO
+omega_pid = [omega_pid_x omega_pid_y omega_pid_z];
+omega_pid_r = omega_pid(1:RHS2-inicio,:);
+
+omega_pid_rx = Biomecanica.InterpolaA100Muestras(omega_pid_r(:,1));
+omega_pid_ry = Biomecanica.InterpolaA100Muestras(omega_pid_r(:,2));
+omega_pid_rz = Biomecanica.InterpolaA100Muestras(omega_pid_r(:,3));
+
+% PIE IZQUIERDA
+omega_pii = [omega_pii_x omega_pii_y omega_pii_z];
+omega_pii_r = omega_pii(LHS1-inicio:LHS2-inicio,:);
+
+omega_pii_rx = Biomecanica.InterpolaA100Muestras(omega_pii_r(:,1))';
+omega_pii_ry = Biomecanica.InterpolaA100Muestras(omega_pii_r(:,2))';
+omega_pii_rz = Biomecanica.InterpolaA100Muestras(omega_pii_r(:,3))';
+
+
+
+close all
+subplot(3,3,1);
+plot(omega_md_rx,'LineWidth',line_width,'color',color_derecho)
+hold on
+plot(omega_mi_rx,'LineWidth',line_width,'color',color_izquierdo)
+grid on
+xticks(0:10:100);
+xlabel('CM [$\%$]','Interpreter','latex');
+ylabel('[${}^\circ$/s ]','Interpreter','latex','FontSize',14);
+title('Muslo - $\omega_x$ - $\vec{i}$','Interpreter','latex','FontSize',14)
+legend({'Derecho', 'Izquierdo'},'Interpreter','latex','Location','best')
+
+subplot(3,3,2);
+plot(omega_md_ry,'LineWidth',line_width,'color',color_derecho)
+hold on
+plot(omega_mi_ry,'LineWidth',line_width,'color',color_izquierdo)
+grid on
+xticks(0:10:100);
+xlabel('CM [$\%$]','Interpreter','latex');
+ylabel('[${}^\circ$/s ]','Interpreter','latex','FontSize',14);
+title('Muslo - $\omega_y$ - $\vec{j}$','Interpreter','latex','FontSize',14)
+legend({'Derecho', 'Izquierdo'},'Interpreter','latex','Location','best')
+
+subplot(3,3,3);
+plot(omega_md_rz,'LineWidth',line_width,'color',color_derecho)
+hold on
+plot(omega_mi_rz,'LineWidth',line_width,'color',color_izquierdo)
+grid on
+xticks(0:10:100);
+xlabel('CM [$\%$]','Interpreter','latex');
+ylabel('[${}^\circ$/s ]','Interpreter','latex','FontSize',14);
+title('Muslo - $\omega_z$ - $\vec{k}$','Interpreter','latex','FontSize',14)
+legend({'Derecho', 'Izquierdo'},'Interpreter','latex','Location','best')
+
+
+
+subplot(3,3,4);
+plot(omega_pd_rx,'LineWidth',line_width,'color',color_derecho)
+hold on
+plot(omega_pi_rx,'LineWidth',line_width,'color',color_izquierdo)
+grid on
+xticks(0:10:100);
+xlabel('CM [$\%$]','Interpreter','latex');
+ylabel('[${}^\circ$/s ]','Interpreter','latex','FontSize',14);
+title('Pierna - $\omega_x$ - $\vec{i}$','Interpreter','latex','FontSize',14)
+legend({'Derecho', 'Izquierdo'},'Interpreter','latex','Location','best')
+subplot(3,3,5);
+plot(omega_pd_ry,'LineWidth',line_width,'color',color_derecho)
+hold on
+plot(omega_pi_ry,'LineWidth',line_width,'color',color_izquierdo)
+grid on
+xticks(0:10:100);
+xlabel('CM [$\%$]','Interpreter','latex');
+ylabel('[${}^\circ$/s ]','Interpreter','latex','FontSize',14);
+title('Pierna - $\omega_y$ - $\vec{j}$','Interpreter','latex','FontSize',14)
+legend({'Derecho', 'Izquierdo'},'Interpreter','latex','Location','best')
+subplot(3,3,6);
+plot(omega_pd_rz,'LineWidth',line_width,'color',color_derecho)
+hold on
+plot(omega_pi_rz,'LineWidth',line_width,'color',color_izquierdo)
+grid on
+xticks(0:10:100);
+xlabel('CM [$\%$]','Interpreter','latex');
+ylabel('[${}^\circ$/s ]','Interpreter','latex','FontSize',14);
+title('Pierna - $\omega_z$ - $\vec{k}$','Interpreter','latex','FontSize',14)
+legend({'Derecho', 'Izquierdo'},'Interpreter','latex','Location','best')
+
+subplot(3,3,7);
+plot(omega_pid_rx,'LineWidth',line_width,'color',color_derecho)
+hold on
+plot(omega_pii_rx,'LineWidth',line_width,'color',color_izquierdo)
+grid on
+xticks(0:10:100);
+xlabel('CM [$\%$]','Interpreter','latex');
+ylabel('[${}^\circ$/s ]','Interpreter','latex','FontSize',14);
+title('Pie - $\omega_x$ - $\vec{i}$','Interpreter','latex','FontSize',14)
+legend({'Derecho', 'Izquierdo'},'Interpreter','latex','Location','best')
+subplot(3,3,8);
+plot(omega_pid_ry,'LineWidth',line_width,'color',color_derecho)
+hold on
+plot(omega_pii_ry,'LineWidth',line_width,'color',color_izquierdo)
+grid on
+xticks(0:10:100);
+xlabel('CM [$\%$]','Interpreter','latex');
+ylabel('[${}^\circ$/s ]','Interpreter','latex','FontSize',14);
+title('Pie - $\omega_y$ - $\vec{j}$','Interpreter','latex','FontSize',14)
+legend({'Derecho', 'Izquierdo'},'Interpreter','latex','Location','best')
+subplot(3,3,9);
+plot(omega_pid_rz,'LineWidth',line_width,'color',color_derecho)
+hold on
+plot(omega_pii_rz,'LineWidth',line_width,'color',color_izquierdo)
+grid on
+xticks(0:10:100);
+xlabel('CM [$\%$]','Interpreter','latex');
+ylabel('[${}^\circ$/s ]','Interpreter','latex','FontSize',14);
+title('Pie - $\omega_z$ - $\vec{k}$','Interpreter','latex','FontSize',14)
+legend({'Derecho', 'Izquierdo'},'Interpreter','latex','Location','best')
+
+
+
