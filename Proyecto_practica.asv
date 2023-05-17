@@ -2014,21 +2014,25 @@ title('Pie - $\omega_z$ - $\vec{k}$','Interpreter','latex','FontSize',14)
 legend({'Derecho', 'Izquierdo'},'Interpreter','latex','Location','best')
 
 %% Variables antropometricas
+
+%Calculo de la masa de cada segmento.
 %{
 y = B0 + B1X1+B2X2
  X1 =  masa en kg.
  X2   = altura en cm.
- La constantes B estan en las tablas del apunte (pagina 48 en adelante).
+ La constantes B estan en la página 48 del apunte, tabla 3.2.
 Como la masa de los segmentos se estima a partir de la altura  y peso del sujeto,
 los segmentos ipsilaterales seran estimados a como de igual masa.
  %}
-%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
-%Calculo de la masa de cada segmento.
+
 Masa_muslo  = -2.649 + 0.1463*A1 + 0.0137*A0;
 Masa_pierna  = -1.592 + 0.0362*A1+0.0121*A0;
 Masa_pie        = -0.829 + 0.077*A1+0.0073*A0;
+
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
 %Calculo de la aceleracion lineal de los segmentos.
+
+
 aCM_muslo_derecho    = Biomecanica.Aceleracion(centro_masa_muslo_derecho,fm);
 aCM_muslo_izquierdo  = Biomecanica.Aceleracion(centro_masa_muslo_izquierdo,fm);
 aCM_pierna_derecha    = Biomecanica.Aceleracion(centro_masa_pierna_derecha,fm);
@@ -2037,17 +2041,6 @@ aCM_pie_derecho          = Biomecanica.Aceleracion(centro_masa_pie_derecho,fm);
 aCM_pie_izquierdo        = Biomecanica.Aceleracion(centro_masa_pie_izquierdo,fm);
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------%
 %Calculo de los momentos 
-%{
-En el modelo que usamos el eje anteroposterior del segmento es Y (que es
-normal al plano fronal) y como modelamos iguales tanto el muslo derecho
-como el izquierdo el momento de inercia I del muslo derecho sera igual al
-del muslo izquierdo. Lo mismo aplica para el resto de los segmentos. Como
-la altura esta en cm el resultado va a dar en cm2 y vamos a tener que
-pasarlo a m2.
-%}
-
-% Momento inercia Iy
-
 
 
 

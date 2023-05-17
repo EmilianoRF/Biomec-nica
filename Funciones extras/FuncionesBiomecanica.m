@@ -172,6 +172,13 @@ wz = deralfa.*cosd(beta) + dergama;
  Porcentaje = 1:length(senial)/100:length(senial);
  
 senialnormalizada  = interp1(muestras,senial,Porcentaje,'spline');
+     end
+     function [aceleracion] = Aceleracion(senial,fm)
+         aceleracion = zeros(size(senial));
+         for n=2:(length(senial)-1)
+             aceleracion(n,:)   = (senial(n+1,:)-2*senial(n,:) + senial(n-1,:))./(1/fm)^2;
+         end
+         aceleracion(1,:) = aceleracion(2,:);
+     end
  end
-   end
-end
+end 
