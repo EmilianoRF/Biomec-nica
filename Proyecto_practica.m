@@ -1776,11 +1776,11 @@ plotear_angulos_euler = true;
      beta_s_pid, beta_c_pid,...
      gamma_s_pid, gamma_c_pid] = Biomecanica.AngulosEuler(i5,j5,k5,plotear_angulos_euler);
  
-     % Pie izquierda
+     % Pie izquierdo
  [  alfa_s_pii, alfa_c_pii,...
      beta_s_pii, beta_c_pii,...
      gamma_s_pii, gamma_c_pii] = Biomecanica.AngulosEuler(i6,j6,k6,plotear_angulos_euler);
-    %% Calculos de las velocidades angulares
+%% Calculos de las velocidades angulares
 
  %MUSLO DERECHO
     % Se calculan  las derivadas
